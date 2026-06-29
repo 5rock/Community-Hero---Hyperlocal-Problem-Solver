@@ -6,14 +6,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      - VITE_API_URL=/api
-      - CHOKIDAR_USEPOLLING=true
-      - WATCHPACK_POLLING=true
+      - "5173:80"
     depends_on:
       - backend
 
@@ -26,10 +19,8 @@ services:
     volumes:
       - ./backend:/app
       - backend_data:/app/data
-    environment:
-      - DATABASE_URL=sqlite:////app/data/sql_app.db
-      - JWT_SECRET=supersecretkey_change_in_production
-      - GEMINI_API_KEY=${GEMINI_API_KEY:-your_gemini_api_key_here}
+    env_file:
+      - ./backend/.env
 
 volumes:
   backend_data:

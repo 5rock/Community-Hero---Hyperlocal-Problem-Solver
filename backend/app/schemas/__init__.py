@@ -1,4 +1,13 @@
-from .user import UserBase, UserCreate, UserUpdate, UserResponse, Token, TokenData
+from .user import (
+    UserBase,
+    UserCreate,
+    UserUpdate,
+    UserResponse,
+    Token,
+    TokenData,
+    ForgotPasswordRequest,
+    PasswordResetRequest,
+)
 from .activity import ActivityBase, ActivityCreate, ActivityResponse
 from .notification import NotificationBase, NotificationCreate, NotificationResponse
 from .issue import IssueBase, IssueCreate, IssueUpdate, IssueResponse

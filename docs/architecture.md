@@ -1,44 +1,30 @@
-# Architecture
+# System Architecture
 
-Vibe2Ship follows a modern, decoupled client-server architecture designed for speed, scalability, and ease of deployment during hackathons.
+Community Hero AI utilizes a modern, decoupled client-server architecture with integrated AI micro-services for smart issue resolution.
 
-## Overview
+## High-Level Architecture
 
-### Frontend (Client)
-- **Framework**: React 19 + TypeScript
-- **Build Tool**: Vite (Lightning fast HMR)
-- **Styling**: Tailwind CSS + Framer Motion (Animations)
-- **State & Routing**: React Context API, React Router DOM
-- **Deployment**: Configured for Vercel or Docker (Nginx)
+```mermaid
+graph TD
+    Client[Web Client (React/Vite)]
+    LB[Nginx Reverse Proxy]
+    API[FastAPI Backend]
+    DB[(PostgreSQL Database)]
+    AI[Gemini AI Services]
+    WS[WebSocket Server]
 
-### Backend (Server)
-- **Framework**: FastAPI (Python 3.10+)
-- **Database**: SQLite (Default for speed), SQLAlchemy ORM (Easy swap to PostgreSQL)
-- **Validation**: Pydantic
-- **Auth**: JWT (JSON Web Tokens)
-- **Deployment**: Configured for Render or Docker (Uvicorn)
-
-### AI Integration
-- **Provider**: Google Gemini API (gemini-1.5-flash)
-- **Usage**: Server-side integration in `app/services/ai.py` to keep API keys secure.
-
-## Directory Structure
-
-```text
-.
-├── frontend/             # React application
-│   ├── src/
-│   │   ├── components/   # Reusable UI elements (Buttons, Inputs, Cards)
-│   │   ├── context/      # Global state (Theme, Auth)
-│   │   ├── pages/        # Route components (Landing, Login, Dashboard)
-│   │   └── services/     # API clients (Axios)
-│   └── Dockerfile        # Nginx production build
-├── backend/              # FastAPI application
-│   ├── app/
-│   │   ├── api/          # Route handlers
-│   │   ├── models/       # Database schemas
-│   │   ├── schemas/      # Pydantic validation schemas
-│   │   └── services/     # Business logic & 3rd party integrations
-│   └── Dockerfile        # Python Uvicorn build
-└── docker-compose.yml    # Local multi-container orchestration
+    Client -->|HTTPS/REST| LB
+    Client -->|WSS| WS
+    LB --> API
+    API --> DB
+    API <-->|gRPC/REST| AI
+    API -->|Async Events| WS
 ```
+
+## Core Components
+
+1. **Frontend:** React with TypeScript, Vite for bundling, TailwindCSS for styling. Uses Context API for global state management (Auth, Theme).
+2. **Backend:** FastAPI (Python) for high-performance async REST APIs.
+3. **Database:** PostgreSQL with SQLAlchemy ORM and Alembic for migrations.
+4. **AI Layer:** Google Gemini for vision processing and text analysis.
+5. **Real-time:** WebSocket connections for live notifications and leaderboard updates.

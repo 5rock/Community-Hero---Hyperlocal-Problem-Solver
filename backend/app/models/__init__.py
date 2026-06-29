@@ -6,3 +6,4 @@ from .verification import Verification
 from .poll import Poll
 from .session import UserSession
 from .audit import AuditLog
+from .password_reset import PasswordResetToken

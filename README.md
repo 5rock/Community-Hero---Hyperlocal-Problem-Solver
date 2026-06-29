@@ -1,53 +1,100 @@
-# Vibe2Ship Hackathon Starter Template
+# Community Hero AI 🦸‍♂️🏙️
 
-A production-ready, AI-powered full-stack boilerplate designed for hackathons. Launch your ideas into orbit with incredible speed and a beautiful UI.
+An AI-powered civic engagement platform designed to bridge the gap between citizens and municipal authorities. By leveraging advanced Computer Vision, Natural Language Processing, and Predictive Analytics, Community Hero AI transforms broken infrastructure reporting into a streamlined, automated, and gamified experience.
 
-## Tech Stack
+---
 
-- **Frontend**: React 19, Vite, Tailwind CSS, React Router, Axios, Framer Motion
-- **Backend**: FastAPI, SQLAlchemy, SQLite, JWT Auth
-- **AI**: Google Gemini API
-- **Tooling**: Docker, GitHub Actions CI
+## 🏆 Project Overview
 
-## Quick Start
+**The Problem:** Municipal reporting systems are slow, manual, and often ignore the citizen. Issues get lost in translation, misrouted, or incorrectly prioritized.
+
+**The Solution:** Community Hero AI allows citizens to report issues with just a photo. Our AI automatically extracts the location, translates descriptions to English, detects objects, assesses severity, estimates repair costs, and routes the ticket to the correct department instantly.
+
+---
+
+## ✨ Features
+
+- **🤖 Vision AI & NLP:** Upload an image and type in any language. Gemini AI parses the image, translates the text, and scores the severity.
+- **🌍 Interactive Maps:** A real-time heatmap of all reported issues.
+- **🛡️ Role-Based Access:** Unique, tailored dashboards for Citizens, Officers, and Admins.
+- **🏆 Gamification:** Earn badges and climb the leaderboard by actively improving your community.
+- **📈 Predictive Analytics:** For Admins, AI forecasts upcoming infrastructure failures based on historical data.
+- **🔒 Enterprise Security:** JWT authentication, Argon2id hashing, and prompt injection guards.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Frontend:** React, Vite, TypeScript, TailwindCSS, Framer Motion, Leaflet.js
+- **Backend:** FastAPI, Python, SQLAlchemy, Alembic
+- **Database:** Supabase PostgreSQL
+- **Storage:** Supabase Storage
+- **AI Integration:** Google Gemini
+- **Infrastructure:** Docker, Nginx
+
+---
+
+## 🚀 Installation & Running Locally
 
 ### Prerequisites
-- Node.js >= 20
-- Python >= 3.10
-- Docker & Docker Compose (optional but recommended)
-- A Google Gemini API Key
+- Node.js (v18+)
+- Python 3.10+
+- PostgreSQL
+- Gemini API Key
 
-### Running with Docker
+### Backend Setup
+1. `cd backend`
+2. `python -m venv venv`
+3. `source venv/bin/activate` (or `.\venv\Scripts\activate` on Windows)
+4. `pip install -r requirements.txt`
+5. Create `.env` and add your `DATABASE_URL` (Supabase connection string), `SUPABASE_URL`, `SUPABASE_KEY`, and `GEMINI_API_KEY`.
+   *(See [SUPABASE_SETUP.md](SUPABASE_SETUP.md) for detailed instructions).*
+6. Run migrations: `alembic upgrade head`
+7. Seed the database with demo data: `python seed.py`
+8. Start the server: `uvicorn app.main:app --reload`
 
-1. Create a `.env` file in the `backend` directory (or export the variable):
-   ```bash
-   GEMINI_API_KEY=your_gemini_api_key_here
-   ```
-2. Start the services:
-   ```bash
-   docker-compose up --build
-   ```
-3. Access the apps:
-   - Frontend: `http://localhost:5173`
-   - Backend API Docs: `http://localhost:8000/docs`
+### Frontend Setup
+1. `cd frontend`
+2. `npm install`
+3. Create `.env` and add `VITE_API_URL=http://localhost:8000/api`
+4. Start the dev server: `npm run dev`
 
-### Running Locally
-
-**Backend:**
+### Docker Setup
+To run the entire stack seamlessly:
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+docker-compose up --build
 ```
 
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
+---
 
-## Pitch Materials
-Check the `pitch/` and `docs/` directories for PPT templates, demo scripts, and architecture outlines ready to impress judges.
+## 🔑 Demo Credentials
+
+To explore the distinct role-based dashboards, use the following credentials (seeded automatically by `seed.py`):
+
+| Role | Email | Password |
+|------|-------|----------|
+| Citizen | `citizen@example.com` | `password123` |
+| Officer | `officer@example.com` | `password123` |
+| Admin   | `admin@example.com` | `password123` |
+
+---
+
+## 📚 Architecture
+
+Read our extensive documentation in the `/docs` folder:
+- [System Architecture](docs/Architecture.md)
+- [Database Schema](docs/DatabaseSchema.md)
+- [AI Workflow](docs/AIWorkflow.md)
+- [Security](docs/Security.md)
+- [Demo Guide for Judges](docs/JudgeDemoGuide.md)
+
+---
+
+## 🔮 Future Scope
+- **IoT Integration:** Automatically report issues via smart city sensors.
+- **Social Integration:** Share reported issues seamlessly to X/Twitter or WhatsApp to gather community support.
+- **Blockchain:** Immutable ledger for municipal fund allocation tracking.
+
+---
+
+Built with ❤️ for a smarter tomorrow.

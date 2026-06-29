@@ -1,0 +1,172 @@
+INFO:     Started server process [28988]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60235 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:62257 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58629 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:52165 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53865 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:60977 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50922 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56937 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:60475 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:51009 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63680 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55023 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:60220 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50841 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:64429 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63255 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50735 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:64864 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61793 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56224 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55190 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:51437 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57660 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50736 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53224 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWRnZS0xNzgyNzIxMDkwOTE3QGV4YW1wbGUuY29tIiwic2Vzc2lvbl9pZCI6IjF3cDAwN21DbnlfRkdRbzgxTUlJQl96aHIxaTV6NEJ3dWZpaFpnZ2pNd00iLCJleHAiOjE3ODI3MjIxOTIsInR5cGUiOiJhY2Nlc3MifQ.tXsO4ihwMdBH1CNR2hX-trmCkQn6DH4TwG42nRpQESU" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61522 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBoZXJvLmFpIiwic2Vzc2lvbl9pZCI6IktKdmE5QUhRWE5RQk53dHJVVkFEWnVFUlExYThzeDFpSnhYUDA5bERxWWsiLCJleHAiOjE3ODI3MjI0NDgsInR5cGUiOiJhY2Nlc3MifQ.o4M8SvI0F5Xfj5JUlgkU7iVPH8kXpaGF3QNgQuClZxs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:62865 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBoZXJvLmFpIiwic2Vzc2lvbl9pZCI6IktKdmE5QUhRWE5RQk53dHJVVkFEWnVFUlExYThzeDFpSnhYUDA5bERxWWsiLCJleHAiOjE3ODI3MjI0NDgsInR5cGUiOiJhY2Nlc3MifQ.o4M8SvI0F5Xfj5JUlgkU7iVPH8kXpaGF3QNgQuClZxs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61937 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBoZXJvLmFpIiwic2Vzc2lvbl9pZCI6IktKdmE5QUhRWE5RQk53dHJVVkFEWnVFUlExYThzeDFpSnhYUDA5bERxWWsiLCJleHAiOjE3ODI3MjI0NDgsInR5cGUiOiJhY2Nlc3MifQ.o4M8SvI0F5Xfj5JUlgkU7iVPH8kXpaGF3QNgQuClZxs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57466 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBoZXJvLmFpIiwic2Vzc2lvbl9pZCI6IktKdmE5QUhRWE5RQk53dHJVVkFEWnVFUlExYThzeDFpSnhYUDA5bERxWWsiLCJleHAiOjE3ODI3MjI0NDgsInR5cGUiOiJhY2Nlc3MifQ.o4M8SvI0F5Xfj5JUlgkU7iVPH8kXpaGF3QNgQuClZxs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55648 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBoZXJvLmFpIiwic2Vzc2lvbl9pZCI6IktKdmE5QUhRWE5RQk53dHJVVkFEWnVFUlExYThzeDFpSnhYUDA5bERxWWsiLCJleHAiOjE3ODI3MjI0NDgsInR5cGUiOiJhY2Nlc3MifQ.o4M8SvI0F5Xfj5JUlgkU7iVPH8kXpaGF3QNgQuClZxs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:51127 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBoZXJvLmFpIiwic2Vzc2lvbl9pZCI6IktKdmE5QUhRWE5RQk53dHJVVkFEWnVFUlExYThzeDFpSnhYUDA5bERxWWsiLCJleHAiOjE3ODI3MjI0NDgsInR5cGUiOiJhY2Nlc3MifQ.o4M8SvI0F5Xfj5JUlgkU7iVPH8kXpaGF3QNgQuClZxs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56977 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBoZXJvLmFpIiwic2Vzc2lvbl9pZCI6IktKdmE5QUhRWE5RQk53dHJVVkFEWnVFUlExYThzeDFpSnhYUDA5bERxWWsiLCJleHAiOjE3ODI3MjI0NDgsInR5cGUiOiJhY2Nlc3MifQ.o4M8SvI0F5Xfj5JUlgkU7iVPH8kXpaGF3QNgQuClZxs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55792 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBoZXJvLmFpIiwic2Vzc2lvbl9pZCI6IktKdmE5QUhRWE5RQk53dHJVVkFEWnVFUlExYThzeDFpSnhYUDA5bERxWWsiLCJleHAiOjE3ODI3MjI0NDgsInR5cGUiOiJhY2Nlc3MifQ.o4M8SvI0F5Xfj5JUlgkU7iVPH8kXpaGF3QNgQuClZxs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:65372 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBoZXJvLmFpIiwic2Vzc2lvbl9pZCI6IktKdmE5QUhRWE5RQk53dHJVVkFEWnVFUlExYThzeDFpSnhYUDA5bERxWWsiLCJleHAiOjE3ODI3MjI0NDgsInR5cGUiOiJhY2Nlc3MifQ.o4M8SvI0F5Xfj5JUlgkU7iVPH8kXpaGF3QNgQuClZxs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57441 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBoZXJvLmFpIiwic2Vzc2lvbl9pZCI6IktKdmE5QUhRWE5RQk53dHJVVkFEWnVFUlExYThzeDFpSnhYUDA5bERxWWsiLCJleHAiOjE3ODI3MjI0NDgsInR5cGUiOiJhY2Nlc3MifQ.o4M8SvI0F5Xfj5JUlgkU7iVPH8kXpaGF3QNgQuClZxs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:64707 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53601 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:51435 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57828 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:51212 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50160 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56164 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:51847 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63269 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:54921 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58461 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58281 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:52822 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63791 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58104 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57091 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53866 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:54036 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:52605 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53174 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59183 - "WebSocket /api/api/ws/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvZmZpY2VyQGhlcm8uYWkiLCJzZXNzaW9uX2lkIjoidDJ5eHV4SFhGYnNfYU1xcjJzUGZ5aS1jWEJWV1RZc3RUWDdjSlprT2NvMCIsImV4cCI6MTc4MjcyMjUwNCwidHlwZSI6ImFjY2VzcyJ9.0iEKGOwbYGp4Y4fzCxN0mETx_aDi7dW3e4I8jMlL7Fs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed

@@ -13,7 +13,7 @@
     --accent: #f1f5f9;
     --accent-foreground: #0f172a;
     --muted: #f8fafc;
-    --muted-foreground: #64748b;
+    --muted-foreground: #475569;
     --border: #e2e8f0;
     --card: #ffffff;
     --card-foreground: #020617;
@@ -42,6 +42,54 @@
     --ring: #a78bfa;
     --input: #1e293b;
   }
+
+  /* CITIZEN THEME: Green/Blue */
+  .theme-citizen {
+    --primary: #10b981; /* Emerald 500 */
+    --primary-foreground: #ffffff;
+    --secondary: #3b82f6; /* Blue 500 */
+    --secondary-foreground: #ffffff;
+    --ring: #10b981;
+  }
+  .dark .theme-citizen {
+    --primary: #34d399; /* Emerald 400 */
+    --primary-foreground: #022c22;
+    --secondary: #60a5fa; /* Blue 400 */
+    --secondary-foreground: #0f172a;
+    --ring: #34d399;
+  }
+
+  /* OFFICER THEME: Orange */
+  .theme-officer {
+    --primary: #f97316; /* Orange 500 */
+    --primary-foreground: #ffffff;
+    --secondary: #f59e0b; /* Amber 500 */
+    --secondary-foreground: #ffffff;
+    --ring: #f97316;
+  }
+  .dark .theme-officer {
+    --primary: #fb923c; /* Orange 400 */
+    --primary-foreground: #431407;
+    --secondary: #fbbf24; /* Amber 400 */
+    --secondary-foreground: #451a03;
+    --ring: #fb923c;
+  }
+
+  /* ADMIN THEME: Blue/Dark Slate */
+  .theme-admin {
+    --primary: #0284c7; /* Sky 600 */
+    --primary-foreground: #ffffff;
+    --secondary: #334155; /* Slate 700 */
+    --secondary-foreground: #ffffff;
+    --ring: #0284c7;
+  }
+  .dark .theme-admin {
+    --primary: #38bdf8; /* Sky 400 */
+    --primary-foreground: #0c4a6e;
+    --secondary: #94a3b8; /* Slate 400 */
+    --secondary-foreground: #0f172a;
+    --ring: #38bdf8;
+  }
 }
 
 @layer base {
@@ -50,5 +98,36 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .high-contrast {
+    filter: contrast(125%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  .animate-bounce-subtle {
+    animation: bounce-subtle 2s infinite;
+  }
+}
+
+@keyframes bounce-subtle {
+  0%,
+  100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }

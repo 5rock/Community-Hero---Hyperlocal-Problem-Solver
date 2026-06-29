@@ -1,23 +1,23 @@
-import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from dotenv import load_dotenv
+from sqlalchemy.pool import QueuePool
 
-load_dotenv()
+from .config import postgres_url
 
-# Database abstraction: use PostgreSQL if configured, fallback to SQLite
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./sql_app.db")
-
-is_sqlite = SQLALCHEMY_DATABASE_URL.startswith("sqlite")
-
-connect_args = {"check_same_thread": False} if is_sqlite else {}
+SQLALCHEMY_DATABASE_URL = postgres_url()
 
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args=connect_args
+    SQLALCHEMY_DATABASE_URL,
+    poolclass=QueuePool,
+    pool_pre_ping=True,
+    pool_recycle=300,
+    pool_size=5,
+    max_overflow=10,
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
+
 
 def get_db():
     db = SessionLocal()

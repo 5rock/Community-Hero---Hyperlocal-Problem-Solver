@@ -1,6 +1,7 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from typing import Optional
 from datetime import datetime
+
 
 class UserBase(BaseModel):
     email: EmailStr
@@ -10,14 +11,18 @@ class UserBase(BaseModel):
     device_fingerprint: Optional[str] = None
     privacy_mode: bool = True
 
+
 class UserCreate(UserBase):
-    password: str
+    password: str = Field(min_length=12, max_length=128)
+
 
 class UserUpdate(BaseModel):
     full_name: Optional[str] = None
     email: Optional[EmailStr] = None
 
+
 class UserResponse(UserBase):
+    model_config = ConfigDict(from_attributes=True)
     id: int
     is_active: bool
     role: str
@@ -28,13 +33,19 @@ class UserResponse(UserBase):
     resolved_reports: int
     created_at: datetime
 
-    
-    class Config:
-        from_attributes = True
-
 class Token(BaseModel):
     access_token: str
     token_type: str
 
+
 class TokenData(BaseModel):
     email: Optional[str] = None
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class PasswordResetRequest(BaseModel):
+    token: str
+    password: str = Field(min_length=12, max_length=128)

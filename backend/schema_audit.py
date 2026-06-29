@@ -1,19 +1,18 @@
-import sqlite3
+from sqlalchemy import inspect
 
-conn = sqlite3.connect('sql_app.db')
-cursor = conn.cursor()
+from app.database import engine
 
-cursor.execute("SELECT name, sql FROM sqlite_master WHERE type='table'")
-for row in cursor.fetchall():
-    print(f"=== TABLE: {row[0]} ===")
-    print(row[1])
-    print()
 
-    cursor2 = conn.cursor()
-    cursor2.execute(f"PRAGMA table_info({row[0]})")
-    cols = cursor2.fetchall()
-    for col in cols:
-        print(f"  col: {col[1]}  type: {col[2]}  notnull: {col[3]}  default: {col[4]}")
-    print()
+def main() -> None:
+    inspector = inspect(engine)
+    for table_name in sorted(inspector.get_table_names()):
+        print(f"=== TABLE: {table_name} ===")
+        for column in inspector.get_columns(table_name):
+            print(
+                f"  col: {column['name']}  type: {column['type']}  "
+                f"nullable: {column['nullable']}  default: {column['default']}"
+            )
 
-conn.close()
+
+if __name__ == "__main__":
+    main()

@@ -1,167 +1,155 @@
-import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom'
+import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { useTheme } from '@/context/ThemeContext'
-import { LayoutDashboard, Map, FilePlus, Trophy, LogOut, Moon, Sun, Menu, X, ShieldCheck, Bell } from 'lucide-react'
-import { useState, useEffect } from 'react'
-import api from '@/services/api'
+import {
+  LayoutDashboard,
+  Map as MapIcon,
+  FilePlus,
+  Trophy,
+  Moon,
+  Sun,
+  ShieldCheck,
+} from 'lucide-react'
+import { NotificationBell } from '@/components/ui/NotificationBell'
+import { LanguageSelector } from '@/components/ui/LanguageSelector'
+import { UserDropdown } from '@/components/ui/UserDropdown'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function DashboardLayout() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const { theme, toggleTheme } = useTheme()
-  const navigate = useNavigate()
   const location = useLocation()
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [notifications, setNotifications] = useState<any[]>([])
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
-
-  useEffect(() => {
-    if (user) {
-      api.get('/users/notifications').then(res => {
-        setNotifications(res.data)
-      }).catch(console.error)
-    }
-  }, [user, location.pathname])
-
-  const handleLogout = () => {
-    logout()
-    navigate('/')
-  }
 
   let navItems = []
   if (user?.role === 'Admin') {
     navItems = [
       { icon: LayoutDashboard, label: 'Analytics', path: '/dashboard/admin' },
-      { icon: Map, label: 'Interactive Map', path: '/dashboard/map' },
+      { icon: MapIcon, label: 'Interactive Map', path: '/dashboard/map' },
       { icon: ShieldCheck, label: 'Leaderboard', path: '/dashboard/leaderboard' },
     ]
   } else if (user?.role === 'Officer') {
     navItems = [
       { icon: LayoutDashboard, label: 'Assigned Issues', path: '/dashboard/officer' },
-      { icon: Map, label: 'Interactive Map', path: '/dashboard/map' },
+      { icon: MapIcon, label: 'Interactive Map', path: '/dashboard/map' },
     ]
   } else {
     navItems = [
       { icon: LayoutDashboard, label: 'Overview', path: '/dashboard' },
       { icon: FilePlus, label: 'Report Issue', path: '/dashboard/report' },
-      { icon: Map, label: 'Interactive Map', path: '/dashboard/map' },
+      { icon: MapIcon, label: 'Interactive Map', path: '/dashboard/map' },
       { icon: Trophy, label: 'Leaderboard', path: '/dashboard/leaderboard' },
     ]
   }
 
   return (
-    <div className="min-h-screen bg-accent/30 flex">
+    <div
+      className={`min-h-screen bg-accent/30 flex theme-${user?.role?.toLowerCase() || 'citizen'}`}
+    >
       {/* Sidebar - Desktop */}
       <aside className="hidden md:flex w-64 flex-col bg-background border-r border-border h-screen sticky top-0">
         <div className="p-6 font-bold text-xl tracking-tighter flex items-center gap-2">
           <ShieldCheck className="text-primary w-6 h-6" />
           Community Hero
         </div>
-        
-        <nav className="flex-1 px-4 py-4 space-y-1">
+
+        <nav className="flex-1 px-4 py-4 space-y-2 relative">
           {navItems.map((item) => {
-            const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path))
+            const isActive =
+              location.pathname === item.path ||
+              (item.path !== '/dashboard' && location.pathname.startsWith(item.path))
             return (
-              <Link 
-                key={item.path} 
+              <Link
+                key={item.path}
                 to={item.path}
-                className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold transition-all ${
-                  isActive ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20' : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                className={`relative flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold transition-colors z-10 ${
+                  isActive
+                    ? 'text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <item.icon size={18} />
+                {isActive && (
+                  <motion.div
+                    layoutId="active-sidebar-tab"
+                    className="absolute inset-0 bg-primary rounded-xl shadow-md shadow-primary/20 -z-10"
+                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                  />
+                )}
+                <item.icon size={18} className={isActive ? '' : 'opacity-70'} />
                 {item.label}
               </Link>
             )
           })}
         </nav>
 
-        <div className="p-4 border-t border-border space-y-4 bg-accent/10">
-          <div className="bg-background rounded-xl p-3 border border-border shadow-sm flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
-              {user?.full_name?.charAt(0) || 'U'}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-bold truncate">{user?.full_name}</div>
-              <div className="text-xs text-muted-foreground truncate">{user?.role}</div>
-            </div>
-            
-            <div className="relative">
-              <button onClick={() => setIsNotificationsOpen(!isNotificationsOpen)} className="p-2 rounded-full hover:bg-accent text-muted-foreground transition-colors relative">
-                <Bell size={16} />
-                {notifications.filter(n => !n.is_read).length > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                )}
+        <div className="p-4 border-t border-border bg-accent/10">
+          <div className="bg-background rounded-xl p-3 border border-border shadow-sm flex items-center justify-between">
+            <UserDropdown />
+            <div className="flex items-center gap-1">
+              <LanguageSelector />
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full hover:bg-accent text-muted-foreground transition-colors"
+                aria-label="Toggle Theme"
+              >
+                {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
               </button>
-              {isNotificationsOpen && (
-                <div className="absolute bottom-12 right-0 w-64 bg-background border border-border rounded-xl shadow-xl p-2 z-50 max-h-64 overflow-y-auto">
-                  <h4 className="text-xs font-bold px-2 py-1 mb-1 text-muted-foreground">Notifications</h4>
-                  {notifications.length === 0 ? (
-                    <p className="text-xs text-center py-4 text-muted-foreground">No notifications</p>
-                  ) : (
-                    notifications.map(n => (
-                      <div key={n.id} className="p-2 hover:bg-accent rounded-lg mb-1">
-                        <div className="text-xs font-bold">{n.title}</div>
-                        <div className="text-xs text-muted-foreground mt-0.5">{n.message}</div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              )}
             </div>
-
-            <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-accent text-muted-foreground transition-colors">
-              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
           </div>
-          <button 
-            onClick={handleLogout}
-            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-red-500 hover:bg-red-500/10 transition-colors"
-          >
-            <LogOut size={18} />
-            Logout
-          </button>
         </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-h-screen max-w-full overflow-hidden">
         {/* Mobile Header */}
-        <header className="md:hidden flex items-center justify-between p-4 bg-background border-b border-border sticky top-0 z-40">
+        <header className="md:hidden flex items-center justify-between p-4 bg-background/80 backdrop-blur-xl border-b border-border sticky top-0 z-40">
           <div className="font-bold text-lg flex items-center gap-2">
             <ShieldCheck className="text-primary" />
-            Community Hero
+            Hero AI
           </div>
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2 bg-accent rounded-md text-foreground">
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <UserDropdown />
+          </div>
         </header>
 
-        {/* Mobile Menu Dropdown */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-background border-b border-border p-4 space-y-2 absolute w-full z-30 shadow-xl">
-             {navItems.map((item) => (
-              <Link 
-                key={item.path} 
-                to={item.path}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold"
-              >
-                <item.icon size={18} />
-                {item.label}
-              </Link>
-            ))}
-            <button 
-              onClick={handleLogout}
-              className="flex w-full items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold text-red-500"
-            >
-              <LogOut size={18} />
-              Logout
-            </button>
+        {/* Mobile Bottom Navigation */}
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background/90 backdrop-blur-xl border-t border-border z-50 pb-safe">
+          <div className="flex justify-around items-center p-2">
+            {navItems.map((item) => {
+              const isActive =
+                location.pathname === item.path ||
+                (item.path !== '/dashboard' && location.pathname.startsWith(item.path))
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex flex-col items-center p-2 rounded-xl text-[10px] font-semibold transition-colors ${
+                    isActive ? 'text-primary' : 'text-muted-foreground'
+                  }`}
+                >
+                  <motion.div whileTap={{ scale: 0.9 }}>
+                    <item.icon size={22} className={isActive ? 'mb-1' : 'mb-1 opacity-70'} />
+                  </motion.div>
+                  {item.label.split(' ')[0]}
+                </Link>
+              )
+            })}
           </div>
-        )}
+        </nav>
 
-        <div className="flex-1 p-6 md:p-8 overflow-y-auto w-full">
-          <Outlet />
+        <div className="flex-1 p-6 pb-28 md:p-8 overflow-y-auto w-full relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="h-full"
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
         </div>
       </main>
     </div>
