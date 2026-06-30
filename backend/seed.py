@@ -5,6 +5,7 @@ from app import models
 from app.services.auth import get_password_hash
 from app.core.security import get_data_hash
 
+
 def seed_db():
     seed_password = os.getenv("SEED_PASSWORD")
     if not seed_password:

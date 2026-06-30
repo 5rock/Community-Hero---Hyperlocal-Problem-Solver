@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 @lru_cache
 def get_supabase_client() -> Client:
     url = os.getenv("SUPABASE_URL", "").strip()

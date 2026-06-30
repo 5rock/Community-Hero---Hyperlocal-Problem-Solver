@@ -111,7 +111,9 @@ async def analyze_preview(
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
         except Exception as exc:
-            raise HTTPException(status_code=503, detail="Image storage is unavailable") from exc
+            raise HTTPException(
+                status_code=503, detail="Image storage is unavailable"
+            ) from exc
 
     analysis = analyze_issue(title, description, image_bytes, image_mime)
 
@@ -139,7 +141,9 @@ async def upload_image(
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
-        raise HTTPException(status_code=503, detail="Image storage is unavailable") from exc
+        raise HTTPException(
+            status_code=503, detail="Image storage is unavailable"
+        ) from exc
 
 
 @router.post("/", response_model=schemas.IssueResponse)

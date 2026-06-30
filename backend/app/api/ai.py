@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from app import schemas, models
 from app.api.auth import get_current_user
-from app.services.ai import get_gemini_response
+from app.services.llm_service import get_gemini_response
 from app.database import get_db
 from sqlalchemy.orm import Session
 

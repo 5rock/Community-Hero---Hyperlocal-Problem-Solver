@@ -11,12 +11,14 @@ from .api import auth, users, ai, issues, stats, admin, ws
 from limits.storage import RedisStorage, MemoryStorage
 import logging
 
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     # Schema changes are owned by Alembic. Startup only verifies connectivity.
     with engine.connect() as connection:
         connection.execute(text("SELECT 1"))
     yield
+
 
 redis_url = os.getenv("REDIS_URL", "")
 if redis_url:

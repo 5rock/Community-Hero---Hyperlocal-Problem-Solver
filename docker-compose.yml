@@ -11,6 +11,9 @@ services:
       - backend
 
   backend:
+    depends_on:
+      postgres:
+        condition: service_healthy
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -22,5 +25,22 @@ services:
     env_file:
       - ./backend/.env
 
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: vibe2ship
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   backend_data:
+  postgres_data:

@@ -47,7 +47,9 @@ def migrate(source: Path = Path("sql_app.db")) -> dict[str, tuple[int, int]]:
                 counts[target_name] = (0, 0)
                 continue
             if target_name not in target_meta.tables:
-                raise RuntimeError(f"Target table is missing: {target_name}; run Alembic first")
+                raise RuntimeError(
+                    f"Target table is missing: {target_name}; run Alembic first"
+                )
 
             source_table = source_meta.tables[source_name]
             target_table = target_meta.tables[target_name]
@@ -57,10 +59,14 @@ def migrate(source: Path = Path("sql_app.db")) -> dict[str, tuple[int, int]]:
                 for row in source_connection.execute(select(source_table))
             ]
             if rows:
-                primary_keys = [column.name for column in target_table.primary_key.columns]
+                primary_keys = [
+                    column.name for column in target_table.primary_key.columns
+                ]
                 statement = insert(target_table).values(rows)
                 if primary_keys:
-                    statement = statement.on_conflict_do_nothing(index_elements=primary_keys)
+                    statement = statement.on_conflict_do_nothing(
+                        index_elements=primary_keys
+                    )
                 target_connection.execute(statement)
 
             source_count = len(rows)

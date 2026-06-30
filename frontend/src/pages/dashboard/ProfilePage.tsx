@@ -250,7 +250,10 @@ export default function ProfilePage() {
                     Enabled
                   </span>
                 </button>
-                <button aria-label="Devices" className="w-full flex items-center justify-between p-3 rounded-xl border border-border bg-accent/30 hover:border-primary/50 transition-colors group">
+                <button
+                  aria-label="Devices"
+                  className="w-full flex items-center justify-between p-3 rounded-xl border border-border bg-accent/30 hover:border-primary/50 transition-colors group"
+                >
                   <div className="flex items-center gap-3">
                     <div className="text-muted-foreground group-hover:text-primary transition-colors">
                       <Smartphone size={18} />
@@ -259,7 +262,10 @@ export default function ProfilePage() {
                   </div>
                   <span className="text-xs text-muted-foreground">2 Active</span>
                 </button>
-                <button aria-label="Theme Preferences" className="w-full flex items-center justify-between p-3 rounded-xl border border-border bg-accent/30 hover:border-primary/50 transition-colors group">
+                <button
+                  aria-label="Theme Preferences"
+                  className="w-full flex items-center justify-between p-3 rounded-xl border border-border bg-accent/30 hover:border-primary/50 transition-colors group"
+                >
                   <div className="flex items-center gap-3">
                     <div className="text-muted-foreground group-hover:text-primary transition-colors">
                       <Monitor size={18} />

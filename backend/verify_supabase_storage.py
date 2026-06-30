@@ -2,7 +2,12 @@
 
 import base64
 
-from app.services.storage import delete_image, download_image, ensure_bucket, upload_image
+from app.services.storage import (
+    delete_image,
+    download_image,
+    ensure_bucket,
+    upload_image,
+)
 
 ONE_PIXEL_PNG = base64.b64decode(
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUB"

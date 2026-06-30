@@ -17,6 +17,7 @@ limiter = Limiter(key_func=get_remote_address)
 router = APIRouter()
 COOKIE_SECURE = os.getenv("COOKIE_SECURE", "true").lower() == "true"
 
+
 class OAuth2PasswordBearerWithCookie(OAuth2PasswordBearer):
     async def __call__(self, request: Request) -> str | None:
         token = request.cookies.get("access_token")
@@ -24,7 +25,7 @@ class OAuth2PasswordBearerWithCookie(OAuth2PasswordBearer):
             authorization = request.headers.get("Authorization")
             if authorization and authorization.startswith("Bearer "):
                 token = authorization.split(" ")[1]
-        
+
         if not token:
             if self.auto_error:
                 raise HTTPException(
@@ -35,6 +36,7 @@ class OAuth2PasswordBearerWithCookie(OAuth2PasswordBearer):
             else:
                 return None
         return token
+
 
 oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/api/auth/login")
 
@@ -437,11 +439,15 @@ def reset_password(
     )
     now = datetime.now(timezone.utc)
     if not reset or reset.expires_at < now:
-        raise HTTPException(status_code=400, detail="Recovery code is invalid or expired")
+        raise HTTPException(
+            status_code=400, detail="Recovery code is invalid or expired"
+        )
 
     user = db.query(models.User).filter(models.User.id == reset.user_id).first()
     if not user:
-        raise HTTPException(status_code=400, detail="Recovery code is invalid or expired")
+        raise HTTPException(
+            status_code=400, detail="Recovery code is invalid or expired"
+        )
 
     user.hashed_password = auth.get_password_hash(payload.password)
     reset.used_at = now
@@ -452,4 +458,3 @@ def reset_password(
     )
     db.commit()
     return {"message": "Password reset successfully"}
-

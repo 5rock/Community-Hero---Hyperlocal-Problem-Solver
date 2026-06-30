@@ -15,7 +15,6 @@ class ResearchAgent:
         full_prompt = f"{self.system_prompt}\n\nTask: {task}"
         client = genai.Client()
         response = client.models.generate_content(
-            model=self.model_name,
-            contents=full_prompt
+            model=self.model_name, contents=full_prompt
         )
         return response.text

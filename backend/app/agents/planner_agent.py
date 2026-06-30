@@ -17,8 +17,7 @@ class PlannerAgent:
         full_prompt = f"{self.system_prompt}\n\nUser Request: {prompt}"
         client = genai.Client()
         response = client.models.generate_content(
-            model=self.model_name,
-            contents=full_prompt
+            model=self.model_name, contents=full_prompt
         )
         tasks = [
             task.strip() for task in response.text.strip().split("\n") if task.strip()

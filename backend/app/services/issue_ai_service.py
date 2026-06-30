@@ -112,8 +112,7 @@ def process_multilingual_text(title: str, description: str) -> tuple[str, str]:
     try:
         client = genai.Client(api_key=api_key)
         res = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"),
-            contents=prompt
+            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"), contents=prompt
         )
         data = parse_json_from_gemini(res.text)
         return data.get("language_code", "en"), data.get(
@@ -173,13 +172,15 @@ def analyze_issue(
     try:
         client = genai.Client(api_key=api_key)
         if image_bytes:
-            contents = [prompt, types.Part.from_bytes(data=image_bytes, mime_type=image_mime)]
+            contents = [
+                prompt,
+                types.Part.from_bytes(data=image_bytes, mime_type=image_mime),
+            ]
         else:
             contents = [prompt]
 
         response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"),
-            contents=contents
+            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"), contents=contents
         )
         result = parse_json_from_gemini(response.text)
 
@@ -215,8 +216,7 @@ def generate_ai_insights(stats_data: dict):
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"),
-            contents=prompt
+            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"), contents=prompt
         )
         return parse_json_from_gemini(response.text)
     except Exception as e:

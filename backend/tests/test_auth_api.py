@@ -57,9 +57,7 @@ def test_signup_login_refresh_rotation_and_logout(client):
 
 def test_citizen_can_read_aggregate_stats(client):
     _, token = _register_and_login(client)
-    response = client.get(
-        "/api/stats/", headers={"Authorization": f"Bearer {token}"}
-    )
+    response = client.get("/api/stats/", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
     assert "total_issues" in response.json()["cards"]
 
