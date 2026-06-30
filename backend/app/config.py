@@ -20,7 +20,16 @@ def _required(name: str) -> str:
 
 
 def postgres_url() -> str:
-    return "sqlite:///./test.db"
+    value = _required("DATABASE_URL")
+    if value.startswith("postgres://"):
+        value = "postgresql+psycopg2://" + value.removeprefix("postgres://")
+    elif value.startswith("postgresql://"):
+        value = "postgresql+psycopg2://" + value.removeprefix("postgresql://")
+    if not value.startswith("postgresql+psycopg2://"):
+        raise ConfigurationError(
+            "DATABASE_URL must use PostgreSQL; SQLite is not supported"
+        )
+    return value
 
 def secret(name: str, minimum_length: int = 32) -> str:
     value = _required(name)
