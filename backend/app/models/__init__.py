@@ -1,3 +1,4 @@
+# ruff: noqa: F403
 from .user import *
 from .session import *
 from .password_reset import *
