@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from app.database import Base
 
 
@@ -10,6 +11,7 @@ class UserSession(Base):
     user_id = Column(
         Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
+    user = relationship("User", back_populates="sessions")
     session_token_hash = Column(String, unique=True, index=True, nullable=False)
     device = Column(String, nullable=True)
     browser = Column(String, nullable=True)
