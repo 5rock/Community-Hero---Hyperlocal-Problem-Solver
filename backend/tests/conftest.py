@@ -27,3 +27,4 @@ def client():
     auth_limiter.enabled = False
     with TestClient(app) as test_client:
         yield test_client
+
