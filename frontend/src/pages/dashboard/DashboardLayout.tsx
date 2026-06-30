@@ -13,6 +13,7 @@ import {
 import { NotificationBell } from '@/components/ui/NotificationBell'
 import { LanguageSelector } from '@/components/ui/LanguageSelector'
 import { UserDropdown } from '@/components/ui/UserDropdown'
+import AIAssistantWidget from '@/components/AIAssistantWidget'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function DashboardLayout() {
@@ -151,6 +152,7 @@ export default function DashboardLayout() {
             </motion.div>
           </AnimatePresence>
         </div>
+        <AIAssistantWidget />
       </main>
     </div>
   )

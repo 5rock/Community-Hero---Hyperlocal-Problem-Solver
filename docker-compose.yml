@@ -24,6 +24,8 @@ services:
       - backend_data:/app/data
     env_file:
       - ./backend/.env
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:password@postgres:5432/vibe2ship
 
   postgres:
     image: postgres:15

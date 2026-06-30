@@ -57,6 +57,9 @@ jobs:
         cache: 'pip'
         cache-dependency-path: './backend/requirements.txt'
 
+    - name: Install System Dependencies
+      run: sudo apt-get update && sudo apt-get install -y libmagic1
+
     - name: Install Backend Dependencies
       working-directory: ./backend
       run: |

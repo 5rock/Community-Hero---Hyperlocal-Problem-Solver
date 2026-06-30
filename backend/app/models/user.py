@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from app.database import Base
 from app.core.security import EncryptedString
 
@@ -29,6 +30,12 @@ class User(Base):
     city = Column(String, nullable=True)
     ward = Column(String, nullable=True)
     department = Column(String, nullable=True)
+    sessions = relationship(
+        "UserSession", back_populates="user", cascade="all, delete-orphan"
+    )
+    chat_messages = relationship(
+        "ChatMessage", back_populates="user", cascade="all, delete-orphan"
+    )
     region = Column(String, nullable=True)
     clearance_level = Column(
         Integer, default=0
