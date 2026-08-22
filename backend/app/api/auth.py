@@ -17,7 +17,7 @@ from slowapi.util import get_remote_address
 limiter = Limiter(key_func=get_remote_address)
 router = APIRouter()
 COOKIE_SECURE = os.getenv("COOKIE_SECURE", "true").lower() == "true"
-ERROR_INCORRECT_CREDENTIALS = ERROR_INCORRECT_CREDENTIALS
+ERROR_INCORRECT_CREDENTIALS = "Incorrect email or password"
 
 
 class OAuth2PasswordBearerWithCookie(OAuth2PasswordBearer):

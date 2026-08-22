@@ -43,9 +43,7 @@ def abac_issue_checker(
     user_level = ROLE_HIERARCHY.get(user.role, 0)
 
     # Super Admin and Admin can access everything
-    if user_level >= 4:
-        pass
-    elif user_level == 1:
+    if user_level == 1:
         # Citizen can only access their own issues
         if issue.reporter_id != user.id:
             raise HTTPException(
@@ -54,12 +52,11 @@ def abac_issue_checker(
             )
     elif user_level in [2, 3]:
         # Officer and Department Manager: check jurisdiction (ABAC)
-        if issue.assigned_officer_id != user.id:
-            if (
-                user.department
-                and issue.suggested_department
-                and user.department != issue.suggested_department
-            ):
+        if issue.assigned_officer_id != user.id and (
+            user.department
+            and issue.suggested_department
+            and user.department != issue.suggested_department
+        ):
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="Access denied. Outside your department.",

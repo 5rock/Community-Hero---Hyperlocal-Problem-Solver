@@ -64,7 +64,7 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-center gap-4 border-l border-border pl-6">
-              <button
+              <button type="button"
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-accent text-muted-foreground hover:text-foreground transition-all"
                 aria-label="Toggle Theme"
@@ -97,14 +97,14 @@ export default function Navbar() {
 
           {/* Mobile Menu Toggle */}
           <div className="md:hidden flex items-center gap-4 z-50">
-            <button
+            <button type="button"
               onClick={toggleTheme}
               className="p-2 rounded-full hover:bg-accent text-muted-foreground transition-all"
               aria-label="Toggle Theme"
             >
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            <button
+            <button type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 -mr-2 text-foreground"
               aria-label="Toggle Mobile Menu"

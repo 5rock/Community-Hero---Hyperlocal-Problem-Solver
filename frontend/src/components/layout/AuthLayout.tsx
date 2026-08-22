@@ -16,7 +16,7 @@ export default function AuthLayout({
   title,
   subtitle,
   showLiveHealth = false,
-}: AuthLayoutProps) {
+}: Readonly<AuthLayoutProps>) {
   return (
     <PageTransition>
       <div className="min-h-screen flex bg-background relative overflow-hidden">
@@ -36,9 +36,9 @@ export default function AuthLayout({
             />
 
             {/* Particles */}
-            {[...Array(20)].map((_, i) => (
+            {[...new Array(20)].map((_, i) => (
               <motion.div
-                key={i}
+                key={i-}
                 className="absolute w-2 h-2 bg-primary/40 rounded-full"
                 initial={{
                   x: (secureRandom() * window.innerWidth) / 2,

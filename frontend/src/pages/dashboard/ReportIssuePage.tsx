@@ -703,7 +703,7 @@ export default function ReportIssuePage() {
                     },
                   ].map((item, i) => (
                     <motion.div
-                      key={i}
+                      key={i-}
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       transition={{ delay: i * 0.1, duration: 0.4 }}

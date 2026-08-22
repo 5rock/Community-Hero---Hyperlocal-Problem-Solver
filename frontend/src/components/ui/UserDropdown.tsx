@@ -37,7 +37,7 @@ export function UserDropdown() {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <button
+      <button type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 hover:bg-accent p-1.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
         aria-expanded={isOpen}
@@ -86,7 +86,7 @@ export function UserDropdown() {
             </div>
 
             <div className="border-t border-border py-2">
-              <button
+              <button type="button"
                 className="w-full flex items-center gap-3 px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors text-left"
                 onClick={() => setIsOpen(false)}
                 role="menuitem"
@@ -96,7 +96,7 @@ export function UserDropdown() {
                 </span>
                 Help & Support
               </button>
-              <button
+              <button type="button"
                 onClick={handleLogout}
                 className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 transition-colors text-left font-medium"
                 role="menuitem"

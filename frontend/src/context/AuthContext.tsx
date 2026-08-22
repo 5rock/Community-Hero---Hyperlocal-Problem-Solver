@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react'
 import api, { setAccessToken } from '@/services/api'
 
 type User = {
@@ -79,16 +79,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null)
   }
 
-  return (
-    <AuthContext.Provider
-      value={{
+  const contextValue = useMemo(() => ({
         user,
         token,
         login,
         logout,
         isAuthenticated: !!user,
         isLoading,
-      }}
+      }), [user, token, isLoading])
+  return (
+    <AuthContext.Provider
+      value={contextValue}
     >
       {children}
     </AuthContext.Provider>

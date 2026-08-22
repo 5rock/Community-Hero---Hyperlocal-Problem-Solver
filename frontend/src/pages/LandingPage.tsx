@@ -96,7 +96,7 @@ export default function LandingPage() {
                   },
                 ].map((feature, i) => (
                   <motion.div
-                    key={i}
+                    key={i-}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -147,7 +147,7 @@ export default function LandingPage() {
                   },
                 ].map((item, i) => (
                   <motion.div
-                    key={i}
+                    key={i-}
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.15, duration: 0.5 }}

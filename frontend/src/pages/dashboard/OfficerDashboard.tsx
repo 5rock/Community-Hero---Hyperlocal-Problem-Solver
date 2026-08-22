@@ -55,7 +55,7 @@ export default function OfficerDashboard() {
       {isLoading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-48 rounded-xl" />
+            <Skeleton key={i-} className="h-48 rounded-xl" />
           ))}
         </div>
       ) : issues.length === 0 ? (
@@ -102,7 +102,7 @@ export default function OfficerDashboard() {
                     {issue.description}
                   </p>
                   <Link to={`/dashboard/issues/${issue.id}`} className="mt-auto">
-                    <button className="w-full flex items-center justify-center gap-2 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground py-2.5 rounded-xl font-semibold transition-all duration-300">
+                    <button type="button" className="w-full flex items-center justify-center gap-2 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground py-2.5 rounded-xl font-semibold transition-all duration-300">
                       Update Progress <ArrowRight size={16} />
                     </button>
                   </Link>

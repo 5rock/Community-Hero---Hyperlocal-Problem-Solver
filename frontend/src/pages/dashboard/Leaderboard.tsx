@@ -69,19 +69,19 @@ export default function Leaderboard() {
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
           <div className="flex bg-accent/50 p-1 rounded-lg">
-            <button
+            <button type="button"
               onClick={() => setTimeframe('weekly')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${timeframe === 'weekly' ? 'bg-background shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
             >
               Weekly
             </button>
-            <button
+            <button type="button"
               onClick={() => setTimeframe('monthly')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${timeframe === 'monthly' ? 'bg-background shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
             >
               Monthly
             </button>
-            <button
+            <button type="button"
               onClick={() => setTimeframe('lifetime')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${timeframe === 'lifetime' ? 'bg-background shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
             >
@@ -89,13 +89,13 @@ export default function Leaderboard() {
             </button>
           </div>
           <div className="flex bg-accent/50 p-1 rounded-lg">
-            <button
+            <button type="button"
               onClick={() => setMetric('points')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${metric === 'points' ? 'bg-background shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}
             >
               Points
             </button>
-            <button
+            <button type="button"
               onClick={() => setMetric('impact')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${metric === 'impact' ? 'bg-background shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}
             >

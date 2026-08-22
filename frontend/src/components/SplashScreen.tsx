@@ -14,7 +14,7 @@ interface SplashScreenProps {
   onComplete: () => void
 }
 
-export default function SplashScreen({ onComplete }: SplashScreenProps) {
+export default function SplashScreen({ onComplete }: Readonly<SplashScreenProps>) {
   const [stage, setStage] = useState(0)
 
   useEffect(() => {

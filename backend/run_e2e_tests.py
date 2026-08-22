@@ -12,6 +12,8 @@ network_errors = []
 js_errors = []
 
 
+URL_DASHBOARD = "**/dashboard"
+TXT_LOGOUT = "text=Logout"
 INPUT_EMAIL = "input[type='email']"
 INPUT_PASSWORD = "input[type='password']"
 BUTTON_SUBMIT = "button[type='submit']"
@@ -66,7 +68,7 @@ async def run_tests():
             await page.fill(INPUT_EMAIL, "sarah@example.com")
             await page.fill(INPUT_PASSWORD, "password")
             await page.click(BUTTON_SUBMIT)
-            await page.wait_for_url("**/dashboard", timeout=10000)
+            await page.wait_for_url(URL_DASHBOARD, timeout=10000)
             await page.wait_for_load_state("networkidle")
             await page.screenshot(
                 path=f"{E2E_DIR}/screenshots/04_CitizenDashboard.png", full_page=True
@@ -100,7 +102,7 @@ async def run_tests():
 
             # Logout
             print("Logging out...")
-            await page.click("text=Logout")
+            await page.click(TXT_LOGOUT)
             await page.wait_for_url("**/")
 
             # Log in as Officer
@@ -109,14 +111,14 @@ async def run_tests():
             await page.fill(INPUT_EMAIL, "officer@hero.ai")
             await page.fill(INPUT_PASSWORD, "password")
             await page.click(BUTTON_SUBMIT)
-            await page.wait_for_url("**/dashboard", timeout=10000)
+            await page.wait_for_url(URL_DASHBOARD, timeout=10000)
             await page.wait_for_load_state("networkidle")
             await page.goto(f"{BASE_URL}/dashboard/officer")
             await page.wait_for_load_state("networkidle")
             await page.screenshot(
                 path=f"{E2E_DIR}/screenshots/08_OfficerDashboard.png", full_page=True
             )
-            await page.click("text=Logout")
+            await page.click(TXT_LOGOUT)
 
             # Log in as Admin
             print("Logging in as Admin...")
@@ -124,14 +126,14 @@ async def run_tests():
             await page.fill(INPUT_EMAIL, "admin@hero.ai")
             await page.fill(INPUT_PASSWORD, "password")
             await page.click(BUTTON_SUBMIT)
-            await page.wait_for_url("**/dashboard", timeout=10000)
+            await page.wait_for_url(URL_DASHBOARD, timeout=10000)
             await page.wait_for_load_state("networkidle")
             await page.goto(f"{BASE_URL}/dashboard/admin")
             await page.wait_for_load_state("networkidle")
             await page.screenshot(
                 path=f"{E2E_DIR}/screenshots/09_AdminDashboard.png", full_page=True
             )
-            await page.click("text=Logout")
+            await page.click(TXT_LOGOUT)
 
             # Swagger Docs
             print("Navigating to Swagger Docs...")
@@ -147,16 +149,17 @@ async def run_tests():
             await context.close()
             await browser.close()
 
-            # Save logs
-            with open(f"{E2E_DIR}/logs/console_logs.json", "w") as f:
-                json.dump(console_logs, f, indent=2)
-            with open(f"{E2E_DIR}/logs/js_errors.json", "w") as f:
-                json.dump(js_errors, f, indent=2)
-            with open(f"{E2E_DIR}/logs/network_errors.json", "w") as f:
-                json.dump(network_errors, f, indent=2)
+            # Return logs to save them synchronously outside this async function
+            return console_logs, js_errors, network_errors
 
             print("Testing complete.")
 
 
 if __name__ == "__main__":
-    asyncio.run(run_tests())
+    logs, j_err, n_err = asyncio.run(run_tests())
+    with open(f"{E2E_DIR}/logs/console_logs.json", "w") as f:
+        json.dump(logs, f, indent=2)
+    with open(f"{E2E_DIR}/logs/js_errors.json", "w") as f:
+        json.dump(j_err, f, indent=2)
+    with open(f"{E2E_DIR}/logs/network_errors.json", "w") as f:
+        json.dump(n_err, f, indent=2)

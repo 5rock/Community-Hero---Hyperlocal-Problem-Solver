@@ -1,3 +1,6 @@
+CAT_WASTE = "Waste Management"
+CAT_ROAD = "Road & Transport"
+ADMIN_EMAIL = "admin@hero.ai"
 import os
 
 from app.database import SessionLocal
@@ -15,15 +18,15 @@ def seed_db():
     # Check if admin exists
     admin = (
         db.query(models.User)
-        .filter(models.User.email_hash == get_data_hash("admin@hero.ai"))
+        .filter(models.User.email_hash == get_data_hash(ADMIN_EMAIL))
         .first()
     )
     if not admin:
         print("Seeding database...")
         # Create users
         admin = models.User(
-            email="admin@hero.ai",
-            email_hash=get_data_hash("admin@hero.ai"),
+            email=ADMIN_EMAIL,
+            email_hash=get_data_hash(ADMIN_EMAIL),
             hashed_password=get_password_hash(seed_password),
             full_name="Admin Hero",
             role="Admin",
@@ -76,7 +79,7 @@ def seed_db():
         issue1 = models.Issue(
             title="Massive Pothole on 4th Street",
             description="There is a huge pothole causing damage to cars passing by.",
-            category="Road & Transport",
+            category=CAT_ROAD,
             severity="Critical",
             status="VERIFIED",
             lat="51.505",
@@ -130,7 +133,7 @@ def seed_db():
         issue4 = models.Issue(
             title="Illegal Dumping in Alley",
             description="Pile of construction waste dumped illegally behind the community center.",
-            category="Waste Management",
+            category=CAT_WASTE,
             severity="Medium",
             status="ASSIGNED",
             lat="51.498",
@@ -142,13 +145,13 @@ def seed_db():
             estimated_cost=8000.0,
             repair_time="2 Days",
             affected_population="Local residents (~50 daily)",
-            suggested_department="Waste Management",
+            suggested_department=CAT_WASTE,
             priority_score=60,
         )
         issue5 = models.Issue(
             title="Fallen Tree Blocking Road",
             description="A large tree fell during last night's storm and is blocking both lanes.",
-            category="Road & Transport",
+            category=CAT_ROAD,
             severity="Critical",
             status="RESOLVED",
             lat="51.502",
@@ -171,10 +174,10 @@ def seed_db():
         import random
 
         categories = [
-            "Road & Transport",
+            CAT_ROAD,
             "Electricity",
             "Water & Plumbing",
-            "Waste Management",
+            CAT_WASTE,
             "Other Issues",
         ]
         severities = ["Critical", "High", "Medium", "Low"]

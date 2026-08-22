@@ -38,16 +38,16 @@ export default function SettingsPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Settings Nav (Sidebar) */}
           <div className="md:col-span-1 space-y-2">
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-primary-foreground font-semibold shadow-md">
+            <button type="button" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-primary-foreground font-semibold shadow-md">
               <Bell size={18} /> Notifications
             </button>
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent text-foreground transition-colors font-medium">
+            <button type="button" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent text-foreground transition-colors font-medium">
               <Shield size={18} /> Privacy
             </button>
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent text-foreground transition-colors font-medium">
+            <button type="button" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent text-foreground transition-colors font-medium">
               <Lock size={18} /> Security
             </button>
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent text-red-500 hover:bg-red-500/10 transition-colors font-medium">
+            <button type="button" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent text-red-500 hover:bg-red-500/10 transition-colors font-medium">
               <Trash2 size={18} /> Danger Zone
             </button>
           </div>

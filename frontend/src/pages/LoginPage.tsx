@@ -42,7 +42,7 @@ export default function LoginPage() {
     if (pass.length > 6) score += 1
     if (pass.length > 10) score += 1
     if (/[A-Z]/.test(pass)) score += 1
-    if (/[0-9]/.test(pass)) score += 1
+    if (/\d/.test(pass)) score += 1
     if (/[^A-Za-z0-9]/.test(pass)) score += 1
     return score
   }
@@ -86,6 +86,14 @@ export default function LoginPage() {
       </span>
     </>
   )
+
+const getStrengthColor = (idx: number, s: number) => {
+    if (s < idx) return 'bg-muted';
+    if (s < 2) return 'bg-red-500';
+    if (s < 3) return 'bg-yellow-500';
+    if (s < 4) return 'bg-blue-500';
+    return 'bg-green-500';
+  }
 
   return (
     <AuthLayout
@@ -148,8 +156,8 @@ export default function LoginPage() {
                   onKeyUp={(e) => {
                     if (e.getModifierState('CapsLock')) {
                       if (!error) setError('Caps Lock is ON')
-                    } else {
-                      if (error === 'Caps Lock is ON') setError('')
+                    } else if (error === 'Caps Lock is ON') {
+                      setError('')
                     }
                   }}
                 />
@@ -167,17 +175,7 @@ export default function LoginPage() {
                     {[1, 2, 3, 4].map((idx) => (
                       <div
                         key={idx}
-                        className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
-                          strength >= idx
-                            ? strength < 2
-                              ? 'bg-red-500'
-                              : strength < 3
-                                ? 'bg-yellow-500'
-                                : strength < 4
-                                  ? 'bg-blue-500'
-                                  : 'bg-green-500'
-                            : 'bg-muted'
-                        }`}
+                        className={`h-1 flex-1 rounded-full transition-colors duration-300 `}
                       />
                     ))}
                   </div>

@@ -182,7 +182,7 @@ export default function ForgotPasswordPage() {
             </form>
             <div className="mt-8 text-center text-sm text-muted-foreground">
               Didn't receive the code?{' '}
-              <button
+              <button type="button"
                 onClick={() => setStep('email')}
                 className="text-primary font-bold hover:underline ml-1"
               >
