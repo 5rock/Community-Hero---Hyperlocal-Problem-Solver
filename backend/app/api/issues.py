@@ -2,7 +2,7 @@ ERROR_ISSUE_NOT_FOUND = "Issue not found"
 ROLE_SUPER_ADMIN = "Super Admin"
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import Annotated, List, Optional
 import math
 from app import schemas, models
 from app.api.auth import get_current_user
@@ -53,7 +53,7 @@ def haversine(lat1, lon1, lat2, lon2):
 
 
 @router.get("/", response_model=List[schemas.IssueResponse])
-def get_issues(db: Session = Depends(get_db)):
+def get_issues(db: Annotated[Session, Depends(get_db)]):
     issues = db.query(models.Issue).all()
     for issue in issues:
         if issue.reporter and issue.reporter.privacy_mode:
@@ -63,8 +63,8 @@ def get_issues(db: Session = Depends(get_db)):
 
 @router.get("/assigned", response_model=List[schemas.IssueResponse])
 def get_assigned_issues(
-    current_user: models.User = Depends(RoleChecker("Officer")),
-    db: Session = Depends(get_db),
+    current_user: Annotated[models.User, Depends(RoleChecker("Officer")]),
+    db: Annotated[Session, Depends(get_db)],
 ):
     return (
         db.query(models.Issue)
@@ -73,8 +73,8 @@ def get_assigned_issues(
     )
 
 
-@router.get("/{issue_id}", response_model=schemas.IssueResponse)
-def get_issue(issue_id: int, db: Session = Depends(get_db)):
+@router.get("/{issue_id}", response_model=schemas.IssueResponse, responses={404: {"description": "Issue not found"}, 401: {"description": "Unauthorized"}})
+def get_issue(issue_id: int, db: Annotated[Session, Depends(get_db)]):
     issue = db.query(models.Issue).filter(models.Issue.id == issue_id).first()
     if not issue:
         raise HTTPException(status_code=404, detail=ERROR_ISSUE_NOT_FOUND)
@@ -90,7 +90,7 @@ async def analyze_preview(
     title: str = Form(...),
     description: str = Form(...),
     file: Optional[UploadFile] = File(None),
-    current_user: models.User = Depends(get_current_user),
+    current_user: Annotated[models.User, Depends(get_current_user)],
 ):
     image_bytes = None
     image_mime = "image/jpeg"
@@ -128,7 +128,7 @@ async def analyze_preview(
 
 @router.post("/upload")
 async def upload_image(
-    file: UploadFile = File(...), current_user: models.User = Depends(get_current_user)
+    file: UploadFile = File(...), current_user: Annotated[models.User, Depends(get_current_user)]
 ):
     content = await file.read()
     
@@ -145,25 +145,24 @@ async def upload_image(
         ) from exc
 
 
-@router.post("/", response_model=schemas.IssueResponse)
-def create_issue(
-    issue: schemas.IssueCreate,
-    current_user: models.User = Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
-
-    category = issue.category or "Other"
-
-    # Duplicate & Cooldown Prevention
+def _check_duplicate(db, category, lat, lng):
     all_issues = db.query(models.Issue).filter(models.Issue.category == category).all()
     for existing in all_issues:
-        dist = haversine(issue.lat, issue.lng, float(existing.lat), float(existing.lng))
-        if dist <= 50:
-            if existing.status not in ["RESOLVED", "CLOSED", "REJECTED"]:
-                raise HTTPException(
-                    status_code=409,
-                    detail=f"Duplicate issue. A similar issue exists within 50m. ID: {existing.id}",
-                )
+        dist = haversine(lat, lng, float(existing.lat), float(existing.lng))
+        if dist <= 50 and existing.status not in ["RESOLVED", "CLOSED", "REJECTED"]:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Duplicate issue. A similar issue exists within 50m. ID: {existing.id}",
+            )
+
+@router.post("/", response_model=schemas.IssueResponse, responses={409: {"description": "Duplicate issue found"}, 400: {"description": "Invalid Input"}})
+def create_issue(
+    issue: schemas.IssueCreate,
+    current_user: Annotated[models.User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+):
+    category = issue.category or "Other"
+    _check_duplicate(db, category, issue.lat, issue.lng)
 
     # AI Routing: Find available officer for the ward and department
     assigned_officer_id = None
@@ -250,8 +249,8 @@ def create_issue(
 def verify_issue(
     issue_id: int,
     verification: schemas.VerificationCreate,
-    current_user: models.User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: Annotated[models.User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     issue = db.query(models.Issue).filter(models.Issue.id == issue_id).first()
     if not issue:
@@ -344,9 +343,9 @@ def _handle_status_update(db: Session, issue: models.Issue, new_status: str) -> 
 @router.patch("/{issue_id}", response_model=schemas.IssueResponse)
 def update_issue_status(
     issue_update: schemas.IssueUpdate,
-    issue: models.Issue = Depends(abac_issue_checker),
-    current_user: models.User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    issue: Annotated[models.Issue, Depends(abac_issue_checker)],
+    current_user: Annotated[models.User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     if current_user.role not in [
         "Admin",
@@ -379,8 +378,8 @@ def update_issue_status(
 def citizen_poll(
     issue_id: int,
     poll: schemas.PollCreate,
-    current_user: models.User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: Annotated[models.User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     issue = db.query(models.Issue).filter(models.Issue.id == issue_id).first()
     if not issue:
@@ -412,8 +411,8 @@ def citizen_poll(
 @router.post("/{issue_id}/support", response_model=schemas.IssueResponse)
 def support_issue(
     issue_id: int,
-    current_user: models.User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: Annotated[models.User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     issue = db.query(models.Issue).filter(models.Issue.id == issue_id).first()
     if not issue:
@@ -428,8 +427,8 @@ def support_issue(
 @router.post("/{issue_id}/reopen", response_model=schemas.IssueResponse)
 def reopen_issue(
     issue_id: int,
-    current_user: models.User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: Annotated[models.User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     issue = db.query(models.Issue).filter(models.Issue.id == issue_id).first()
     if not issue:

@@ -1,3 +1,4 @@
+const secureRandom = () => window.crypto.getRandomValues(new Uint32Array(1))[0] / 4294967295;
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -439,7 +440,7 @@ export default function ProfilePage() {
               <CardContent className="p-6">
                 <div className="flex flex-wrap gap-1.5 justify-center sm:justify-start">
                   {[...Array(140)].map((_, i) => {
-                    const activityLevel = Math.random()
+                    const activityLevel = secureRandom()
                     const color =
                       activityLevel > 0.8
                         ? 'bg-primary'

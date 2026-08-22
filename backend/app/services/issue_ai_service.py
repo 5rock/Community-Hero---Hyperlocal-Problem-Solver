@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 # Configure Gemini
 api_key = os.getenv("GEMINI_API_KEY")
 
+DEFAULT_MODEL = "gemini-3.5-flash"
+
 INJECTION_KEYWORDS = [
     "ignore previous instructions",
     "reveal database",
@@ -51,7 +53,7 @@ def sanitize_pii(text: str) -> str:
     text = re.sub(r"\b\d{4}\s\d{4}\s\d{4}\b", "[REDACTED GOVT ID]", text)
     text = re.sub(r"\b\d{3}-\d{2}-\d{4}\b", "[REDACTED GOVT ID]", text)
     text = re.sub(
-        r"[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\s*,\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)",
+        r"[-+]?\d{1,3}\.\d+\s*,\s*[-+]?\d{1,3}\.\d+",
         "[REDACTED GPS]",
         text,
     )
@@ -112,14 +114,14 @@ def process_multilingual_text(title: str, description: str) -> tuple[str, str]:
     try:
         client = genai.Client(api_key=api_key)
         res = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"), contents=prompt
+            model=os.getenv("GEMINI_MODEL", DEFAULT_MODEL), contents=prompt
         )
         data = parse_json_from_gemini(res.text)
         return data.get("language_code", "en"), data.get(
             "translated_text", f"{title}. {description}"
         )
     except Exception as e:
-        logger.error(f"Translation failed: {e}")
+        logger.exception("Translation failed: %s", e)
         return "en", f"{title}. {description}"
 
 
@@ -183,7 +185,7 @@ def analyze_issue(
             contents = [prompt]
 
         response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"), 
+            model=os.getenv("GEMINI_MODEL", DEFAULT_MODEL), 
             contents=contents,
             config=types.GenerateContentConfig(
                 response_mime_type="application/json",
@@ -210,10 +212,10 @@ def analyze_issue(
 
         return result
     except ValidationError as e:
-        logger.error(f"Pydantic Validation failed for AI output: {e}")
+        logger.exception("Pydantic Validation failed for AI output: %s", e)
         return fallback_analysis()
     except Exception as e:
-        logger.error(f"Error analyzing issue: {e}")
+        logger.exception("Error analyzing issue: %s", e)
         return fallback_analysis()
 
 
@@ -238,11 +240,11 @@ def generate_ai_insights(stats_data: dict):
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"), contents=prompt
+            model=os.getenv("GEMINI_MODEL", DEFAULT_MODEL), contents=prompt
         )
         return parse_json_from_gemini(response.text)
     except Exception as e:
-        logger.error(f"Error generating insights: {e}")
+        logger.exception("Error generating insights: %s", e)
         return {
             "top_categories": ["Pothole", "Streetlight"],
             "hotspot_areas": ["Downtown", "North Park"],

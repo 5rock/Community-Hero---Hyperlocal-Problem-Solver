@@ -167,6 +167,7 @@ def seed_db():
         db.commit()
 
         # Add a bunch of random mock issues for density on the map
+        import secrets
         import random
 
         categories = [
@@ -194,20 +195,20 @@ def seed_db():
                 models.Issue(
                     title=f"Mocked Issue #{i+100}",
                     description=f"This is a generated issue for density testing. Random index {i}.",
-                    category=random.choice(categories),
-                    severity=random.choice(severities),
-                    status=random.choice(statuses),
+                    category=secrets.SystemRandom().choice(categories),
+                    severity=secrets.SystemRandom().choice(severities),
+                    status=secrets.SystemRandom().choice(statuses),
                     lat=str(lat),
                     lng=str(lng),
-                    reporter_id=random.choice([citizen1.id, citizen2.id]),
+                    reporter_id=secrets.SystemRandom().choice([citizen1.id, citizen2.id]),
                     ai_summary="AI generated summary for mock issue.",
                     ai_suggested_resolution="AI generated resolution.",
                     ai_confidence=random.uniform(70.0, 99.9),
                     estimated_cost=random.uniform(100.0, 50000.0),
-                    repair_time=f"{random.randint(1, 10)} Days",
-                    affected_population=f"~{random.randint(10, 1000)} daily",
+                    repair_time=f"{secrets.SystemRandom().randint(1, 10)} Days",
+                    affected_population=f"~{secrets.SystemRandom().randint(10, 1000)} daily",
                     suggested_department="Various",
-                    priority_score=random.randint(10, 100),
+                    priority_score=secrets.SystemRandom().randint(10, 100),
                 )
             )
         db.add_all(dense_issues)

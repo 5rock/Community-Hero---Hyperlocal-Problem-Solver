@@ -12,6 +12,10 @@ network_errors = []
 js_errors = []
 
 
+INPUT_EMAIL = "input[type='email']"
+INPUT_PASSWORD = "input[type='password']"
+BUTTON_SUBMIT = "button[type='submit']"
+
 async def run_tests():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
@@ -59,9 +63,9 @@ async def run_tests():
             # Log in as Citizen
             print("Logging in as Citizen...")
             await page.goto(f"{BASE_URL}/login")
-            await page.fill("input[type='email']", "sarah@example.com")
-            await page.fill("input[type='password']", "password")
-            await page.click("button[type='submit']")
+            await page.fill(INPUT_EMAIL, "sarah@example.com")
+            await page.fill(INPUT_PASSWORD, "password")
+            await page.click(BUTTON_SUBMIT)
             await page.wait_for_url("**/dashboard", timeout=10000)
             await page.wait_for_load_state("networkidle")
             await page.screenshot(
@@ -102,9 +106,9 @@ async def run_tests():
             # Log in as Officer
             print("Logging in as Officer...")
             await page.goto(f"{BASE_URL}/login")
-            await page.fill("input[type='email']", "officer@hero.ai")
-            await page.fill("input[type='password']", "password")
-            await page.click("button[type='submit']")
+            await page.fill(INPUT_EMAIL, "officer@hero.ai")
+            await page.fill(INPUT_PASSWORD, "password")
+            await page.click(BUTTON_SUBMIT)
             await page.wait_for_url("**/dashboard", timeout=10000)
             await page.wait_for_load_state("networkidle")
             await page.goto(f"{BASE_URL}/dashboard/officer")
@@ -117,9 +121,9 @@ async def run_tests():
             # Log in as Admin
             print("Logging in as Admin...")
             await page.goto(f"{BASE_URL}/login")
-            await page.fill("input[type='email']", "admin@hero.ai")
-            await page.fill("input[type='password']", "password")
-            await page.click("button[type='submit']")
+            await page.fill(INPUT_EMAIL, "admin@hero.ai")
+            await page.fill(INPUT_PASSWORD, "password")
+            await page.click(BUTTON_SUBMIT)
             await page.wait_for_url("**/dashboard", timeout=10000)
             await page.wait_for_load_state("networkidle")
             await page.goto(f"{BASE_URL}/dashboard/admin")

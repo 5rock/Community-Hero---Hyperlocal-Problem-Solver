@@ -1,3 +1,4 @@
+from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -16,6 +17,7 @@ from slowapi.util import get_remote_address
 limiter = Limiter(key_func=get_remote_address)
 router = APIRouter()
 COOKIE_SECURE = os.getenv("COOKIE_SECURE", "true").lower() == "true"
+ERROR_INCORRECT_CREDENTIALS = ERROR_INCORRECT_CREDENTIALS
 
 
 class OAuth2PasswordBearerWithCookie(OAuth2PasswordBearer):
@@ -42,7 +44,7 @@ oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/api/auth/login")
 
 
 def get_current_user(
-    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+    token: Annotated[str, Depends(oauth2_scheme)], db: Annotated[Session, Depends(get_db)]
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -81,7 +83,7 @@ def get_current_user(
 
 
 def get_current_session(
-    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+    token: Annotated[str, Depends(oauth2_scheme)], db: Annotated[Session, Depends(get_db)]
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -109,9 +111,9 @@ def get_current_session(
     return session
 
 
-@router.post("/register", response_model=schemas.UserResponse)
+@router.post("/register", response_model=schemas.UserResponse, responses={400: {"description": "Email already registered"}})
 @limiter.limit("3/minute")
-def register(request: Request, user: schemas.UserCreate, db: Session = Depends(get_db)):
+def register(request: Request, user: schemas.UserCreate, db: Annotated[Session, Depends(get_db)]):
     email_hash = get_data_hash(user.email)
     db_user = db.query(models.User).filter(models.User.email_hash == email_hash).first()
     if db_user:
@@ -138,14 +140,70 @@ def register(request: Request, user: schemas.UserCreate, db: Session = Depends(g
     return db_user
 
 
+def _check_user_lockout(db: Session, user: models.User, ip_address: str, now: datetime):
+    if not user.locked_until:
+        return
+
+    locked_until = user.locked_until
+    if locked_until.tzinfo is None:
+        locked_until = locked_until.replace(tzinfo=timezone.utc)
+    
+    if locked_until > now:
+        audit = models.AuditLog(
+            user_id=user.id,
+            role=user.role,
+            action="LOGIN_LOCKED",
+            result="FAILURE",
+            details="Account is temporarily locked",
+            ip_address=ip_address,
+        )
+        db.add(audit)
+        db.commit()
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=ERROR_INCORRECT_CREDENTIALS,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    else:
+        # Lockout expired, reset counter before attempting
+        user.failed_login_attempts = 0
+        user.locked_until = None
+        db.commit()
+
+def _handle_failed_password(db: Session, user: models.User, ip_address: str, now: datetime):
+    user.failed_login_attempts = (user.failed_login_attempts or 0) + 1
+    audit_action = "LOGIN_FAILED"
+    audit_details = "Incorrect password"
+    if user.failed_login_attempts >= 5:
+        user.locked_until = now + timedelta(minutes=15)
+        audit_action = "ACCOUNT_LOCKED"
+        audit_details = "5 failed attempts, account locked for 15 minutes"
+
+    audit = models.AuditLog(
+        user_id=user.id,
+        role=user.role,
+        action=audit_action,
+        result="FAILURE",
+        details=audit_details,
+        ip_address=ip_address,
+    )
+    db.add(audit)
+    db.commit()
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail=ERROR_INCORRECT_CREDENTIALS,
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
 @router.post("/login")
 @limiter.limit("5/minute")
 def login(
     request: Request,
     response: Response,
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db),
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    db: Annotated[Session, Depends(get_db)],
 ):
+    ip_address = request.client.host if request.client else ""
     email_hash = get_data_hash(form_data.username)
     user = db.query(models.User).filter(models.User.email_hash == email_hash).first()
 
@@ -155,69 +213,22 @@ def login(
             action="LOGIN_FAILED",
             result="FAILURE",
             details=f"Attempted email hash: {email_hash}",
-            ip_address=request.client.host if request.client else "",
+            ip_address=ip_address,
         )
         db.add(audit)
         db.commit()
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
+            detail=ERROR_INCORRECT_CREDENTIALS,
             headers={"WWW-Authenticate": "Bearer"},
         )
 
     # Check lockout
     now = datetime.now(timezone.utc)
-    if user.locked_until:
-        locked_until = user.locked_until
-        if locked_until.tzinfo is None:
-            locked_until = locked_until.replace(tzinfo=timezone.utc)
-        
-        if locked_until > now:
-            audit = models.AuditLog(
-                user_id=user.id,
-                role=user.role,
-                action="LOGIN_LOCKED",
-                result="FAILURE",
-                details="Account is temporarily locked",
-                ip_address=request.client.host if request.client else "",
-            )
-            db.add(audit)
-            db.commit()
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect email or password",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        else:
-            # Lockout expired, reset counter before attempting
-            user.failed_login_attempts = 0
-            user.locked_until = None
-            db.commit()
+    _check_user_lockout(db, user, ip_address, now)
 
     if not auth.verify_password(form_data.password, user.hashed_password):
-        user.failed_login_attempts = (user.failed_login_attempts or 0) + 1
-        audit_action = "LOGIN_FAILED"
-        audit_details = "Incorrect password"
-        if user.failed_login_attempts >= 5:
-            user.locked_until = now + timedelta(minutes=15)
-            audit_action = "ACCOUNT_LOCKED"
-            audit_details = "5 failed attempts, account locked for 15 minutes"
-
-        audit = models.AuditLog(
-            user_id=user.id,
-            role=user.role,
-            action=audit_action,
-            result="FAILURE",
-            details=audit_details,
-            ip_address=request.client.host if request.client else "",
-        )
-        db.add(audit)
-        db.commit()
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        _handle_failed_password(db, user, ip_address, now)
 
     # Successful login, reset lockout counters
     if (user.failed_login_attempts and user.failed_login_attempts > 0) or user.locked_until:
@@ -293,12 +304,12 @@ def login(
 
 
 @router.get("/me", response_model=schemas.UserResponse)
-def read_users_me(current_user: models.User = Depends(get_current_user)):
+def read_users_me(current_user: Annotated[models.User, Depends(get_current_user)]):
     return current_user
 
 
 @router.post("/refresh")
-def refresh_token(request: Request, response: Response, db: Session = Depends(get_db)):
+def refresh_token(request: Request, response: Response, db: Annotated[Session, Depends(get_db)]):
     refresh_token = request.cookies.get("refresh_token")
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -383,8 +394,8 @@ def refresh_token(request: Request, response: Response, db: Session = Depends(ge
 @router.post("/logout")
 def logout(
     response: Response,
-    db: Session = Depends(get_db),
-    current_session: models.UserSession = Depends(get_current_session),
+    db: Annotated[Session, Depends(get_db)],
+    current_session: Annotated[models.UserSession, Depends(get_current_session)],
 ):
     current_session.is_active = False
     db.commit()
@@ -395,7 +406,7 @@ def logout(
 
 @router.post("/logout-all")
 def logout_all(
-    db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)
+    db: Annotated[Session, Depends(get_db)], current_user: Annotated[models.User, Depends(get_current_user)]
 ):
     sessions = (
         db.query(models.UserSession)
@@ -410,7 +421,7 @@ def logout_all(
 
 @router.get("/sessions")
 def get_sessions(
-    db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)
+    db: Annotated[Session, Depends(get_db)], current_user: Annotated[models.User, Depends(get_current_user)]
 ):
     sessions = (
         db.query(models.UserSession)
@@ -430,12 +441,12 @@ def get_sessions(
     ]
 
 
-@router.post("/forgot-password", status_code=status.HTTP_202_ACCEPTED)
+@router.post("/forgot-password", status_code=status.HTTP_202_ACCEPTED, responses={400: {"description": "Invalid input"}})
 @limiter.limit("3/minute")
 def forgot_password(
     request: Request,
     payload: schemas.ForgotPasswordRequest,
-    db: Session = Depends(get_db),
+    db: Annotated[Session, Depends(get_db)],
 ):
     generic = {"message": "If the account exists, a recovery code has been sent."}
     user = (
@@ -461,12 +472,12 @@ def forgot_password(
     return generic
 
 
-@router.post("/reset-password")
+@router.post("/reset-password", responses={400: {"description": "Recovery code is invalid or expired"}, 422: {"description": "Password must be at least 12 characters"}})
 @limiter.limit("5/minute")
 def reset_password(
     request: Request,
     payload: schemas.PasswordResetRequest,
-    db: Session = Depends(get_db),
+    db: Annotated[Session, Depends(get_db)],
 ):
     if len(payload.password) < 12:
         raise HTTPException(

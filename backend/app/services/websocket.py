@@ -35,8 +35,8 @@ class ConnectionManager:
             for connection in self.active_connections[user_id]:
                 try:
                     await connection.send_text(json.dumps(message))
-                except Exception as e:
-                    logger.error(f"Error sending message to user {user_id}: {e}")
+                except Exception:
+                    logger.exception(f"Error sending message to user {user_id}")
                     dead_sockets.append(connection)
 
             # Cleanup dead sockets
@@ -48,8 +48,8 @@ class ConnectionManager:
             for connection in connections:
                 try:
                     await connection.send_text(json.dumps(message))
-                except Exception as e:
-                    logger.error(f"Error broadcasting to user {user_id}: {e}")
+                except Exception:
+                    logger.exception(f"Error broadcasting to user {user_id}")
 
 
 manager = ConnectionManager()

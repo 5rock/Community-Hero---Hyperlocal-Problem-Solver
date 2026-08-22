@@ -6,12 +6,18 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --only-binary :all: -r requirements.txt || pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Copy only necessary directories
+COPY app/ ./app/
+COPY alembic/ ./alembic/
+COPY alembic.ini .
+COPY run_e2e_tests.py .
+COPY seed.py .
+COPY migrate_data.py .
 
 RUN useradd -m myuser && chown -R myuser /app
 USER myuser
 
 # Run migrations and start app
-CMD alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000
+CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]

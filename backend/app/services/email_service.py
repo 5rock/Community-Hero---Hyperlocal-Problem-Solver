@@ -29,6 +29,15 @@ class EmailService:
         repair_time: str,
     ):
         subject = f"Issue Received: #{issue_id} - {title}"
+        
+        bg_color = '#fee2e2'
+        text_color = '#ef4444'
+        if severity == 'High':
+            bg_color = '#ffedd5'
+            text_color = '#f97316'
+        elif severity not in ('Critical', 'High'):
+            bg_color = '#fef9c3'
+            text_color = '#eab308'
 
         # HTML Content based on the requested template
         html_content = f"""
@@ -56,7 +65,7 @@ class EmailService:
                                 <tr>
                                     <td style="padding: 8px 0; color: #64748b; font-weight: bold;">AI Severity:</td>
                                     <td style="padding: 8px 0; color: #0f172a;">
-                                        <span style="background-color: {'#fee2e2' if severity == 'Critical' else '#ffedd5' if severity == 'High' else '#fef9c3'}; color: {'#ef4444' if severity == 'Critical' else '#f97316' if severity == 'High' else '#eab308'}; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">
+                                        <span style="background-color: {bg_color}; color: {text_color}; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">
                                             {severity}
                                         </span>
                                     </td>
@@ -119,8 +128,8 @@ class EmailService:
                 server.sendmail(self.from_email, to_email, msg.as_string())
 
             logger.info(f"Email sent successfully to {to_email}")
-        except Exception as e:
-            logger.error(f"Failed to send email to {to_email}: {str(e)}")
+        except Exception:
+            logger.exception(f"Failed to send email to {to_email}")
 
 
 email_service = EmailService()

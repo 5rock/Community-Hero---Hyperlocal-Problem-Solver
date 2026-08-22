@@ -4,7 +4,8 @@ from PIL import Image
 import io
 import mimetypes
 
-ALLOWED_MIME_TYPES = {"image/jpeg", "image/png", "image/webp"}
+MIME_JPEG = "image/jpeg"
+ALLOWED_MIME_TYPES = {MIME_JPEG, "image/png", "image/webp"}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 MAX_DIMENSION = 4000
 
@@ -35,7 +36,7 @@ def sanitize_and_validate_image(content: bytes) -> tuple[bytes, str, str]:
 
         # Sanitize metadata by creating a new image (removes EXIF)
         # Handle RGBA to RGB conversion for JPEG
-        if mime_type in ["image/jpeg", "image/jpg"] and img.mode in ("RGBA", "P"):
+        if mime_type in [MIME_JPEG, "image/jpg"] and img.mode in ("RGBA", "P"):
             img = img.convert("RGB")
             
         data = list(img.getdata())
@@ -43,7 +44,7 @@ def sanitize_and_validate_image(content: bytes) -> tuple[bytes, str, str]:
         image_without_exif.putdata(data)
 
         output = io.BytesIO()
-        save_format = "JPEG" if mime_type in ["image/jpeg", "image/jpg"] else mime_type.split("/")[-1].upper()
+        save_format = "JPEG" if mime_type in [MIME_JPEG, "image/jpg"] else mime_type.split("/")[-1].upper()
         
         image_without_exif.save(output, format=save_format)
         sanitized_content = output.getvalue()
@@ -61,5 +62,5 @@ def sanitize_and_validate_image(content: bytes) -> tuple[bytes, str, str]:
 
         return sanitized_content, mime_type, ext
 
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=400, detail="Invalid or corrupted image file.")

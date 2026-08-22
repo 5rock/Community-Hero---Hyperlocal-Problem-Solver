@@ -1,3 +1,4 @@
+const secureRandom = () => window.crypto.getRandomValues(new Uint32Array(1))[0] / 4294967295;
 import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { ShieldCheck, Activity, Users, MapPin } from 'lucide-react'
@@ -40,17 +41,17 @@ export default function AuthLayout({
                 key={i}
                 className="absolute w-2 h-2 bg-primary/40 rounded-full"
                 initial={{
-                  x: (Math.random() * window.innerWidth) / 2,
-                  y: Math.random() * window.innerHeight,
+                  x: (secureRandom() * window.innerWidth) / 2,
+                  y: secureRandom() * window.innerHeight,
                 }}
                 animate={{
-                  y: [null, Math.random() * -100 - 50],
+                  y: [null, secureRandom() * -100 - 50],
                   opacity: [0, 1, 0],
                 }}
                 transition={{
-                  duration: Math.random() * 3 + 2,
+                  duration: secureRandom() * 3 + 2,
                   repeat: Infinity,
-                  delay: Math.random() * 5,
+                  delay: secureRandom() * 5,
                 }}
               />
             ))}

@@ -55,7 +55,7 @@ async def chat_websocket(websocket: WebSocket, db: Annotated[Session, Depends(ge
             )
             email = payload.get("sub")
             if not email:
-                raise Exception("Invalid token")
+                raise ValueError("Invalid token")
         except Exception:
             await websocket.close(code=1008, reason="Invalid token")
             return
