@@ -294,7 +294,7 @@ export default function DashboardHome() {
                   </div>
                   {user?.role === 'Citizen' && (
                     <Link to="/dashboard/report">
-                      <button type="button" className="mt-2 text-xs font-semibold bg-primary/10 text-primary px-4 py-2 rounded-full hover:bg-primary/20 transition-colors">
+                      <button className="mt-2 text-xs font-semibold bg-primary/10 text-primary px-4 py-2 rounded-full hover:bg-primary/20 transition-colors">
                         Report an Issue
                       </button>
                     </Link>

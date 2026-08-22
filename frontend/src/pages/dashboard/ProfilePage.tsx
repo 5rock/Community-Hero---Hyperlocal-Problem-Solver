@@ -240,7 +240,7 @@ export default function ProfilePage() {
                 <CardTitle className="text-lg">Account Settings</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <button type="button" className="w-full flex items-center justify-between p-3 rounded-xl border border-border bg-accent/30 hover:border-primary/50 transition-colors group">
+                <button className="w-full flex items-center justify-between p-3 rounded-xl border border-border bg-accent/30 hover:border-primary/50 transition-colors group">
                   <div className="flex items-center gap-3">
                     <div className="text-muted-foreground group-hover:text-primary transition-colors">
                       <Bell size={18} />
@@ -251,7 +251,7 @@ export default function ProfilePage() {
                     Enabled
                   </span>
                 </button>
-                <button type="button"
+                <button
                   aria-label="Devices"
                   className="w-full flex items-center justify-between p-3 rounded-xl border border-border bg-accent/30 hover:border-primary/50 transition-colors group"
                 >
@@ -263,7 +263,7 @@ export default function ProfilePage() {
                   </div>
                   <span className="text-xs text-muted-foreground">2 Active</span>
                 </button>
-                <button type="button"
+                <button
                   aria-label="Theme Preferences"
                   className="w-full flex items-center justify-between p-3 rounded-xl border border-border bg-accent/30 hover:border-primary/50 transition-colors group"
                 >
@@ -439,7 +439,7 @@ export default function ProfilePage() {
               </CardHeader>
               <CardContent className="p-6">
                 <div className="flex flex-wrap gap-1.5 justify-center sm:justify-start">
-                  {[...new Array(140)].map((_, i) => {
+                  {[...Array(140)].map((_, i) => {
                     const activityLevel = secureRandom()
                     const color =
                       activityLevel > 0.8
@@ -451,7 +451,7 @@ export default function ProfilePage() {
                             : 'bg-accent/50'
                     return (
                       <motion.div
-                        key={i-}
+                        key={i}
                         whileHover={{ scale: 1.5, zIndex: 10 }}
                         className={`w-3.5 h-3.5 rounded-sm ${color} transition-colors cursor-pointer border border-border/10`}
                         title={`${Math.floor(activityLevel * 5)} contributions on this day`}
@@ -492,7 +492,7 @@ export default function ProfilePage() {
             >
               <div className="p-6 border-b border-border bg-accent/30 flex items-center justify-between">
                 <h2 className="text-xl font-bold">Edit Profile</h2>
-                <button type="button"
+                <button
                   onClick={() => setIsEditing(false)}
                   className="p-2 rounded-full hover:bg-accent transition-colors"
                 >

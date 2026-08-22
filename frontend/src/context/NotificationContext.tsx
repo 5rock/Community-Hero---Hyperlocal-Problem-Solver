@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode, useMemo } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { wsService, NotificationPayload } from '../services/ws'
 import { useAuth } from './AuthContext'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -49,9 +49,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
   }, [notifications])
 
-  const contextValue = useMemo(() => ({ notifications, unreadCount, markAllAsRead }), [notifications, unreadCount])
   return (
-    <NotificationContext.Provider value={contextValue}>
+    <NotificationContext.Provider value={{ notifications, unreadCount, markAllAsRead }}>
       {children}
       <AnimatePresence>
         {toast && (
@@ -84,7 +83,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
                 <h4 className="text-sm font-bold text-foreground">{toast.title}</h4>
                 <p className="text-sm text-muted-foreground mt-1 leading-snug">{toast.message}</p>
               </div>
-              <button type="button"
+              <button
                 onClick={() => setToast(null)}
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >

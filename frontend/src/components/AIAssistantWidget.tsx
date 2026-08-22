@@ -85,7 +85,7 @@ export default function AIAssistantWidget() {
           setIsStreaming(true)
           setMessages((prev) => {
             const lastMsg = prev[prev.length - 1]
-            if (lastMsg?.role === 'assistant' && prev.length > 1) {
+            if (lastMsg && lastMsg.role === 'assistant' && prev.length > 1) {
               return [
                 ...prev.slice(0, -1),
                 { role: 'assistant', content: lastMsg.content + data.text },
@@ -121,7 +121,7 @@ export default function AIAssistantWidget() {
   }, [isOpen])
 
   const handleSend = () => {
-    if (!input.trim() || wsRef.current?.readyState !== WebSocket.OPEN) return
+    if (!input.trim() || !wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return
 
     const msg = input.trim()
     setMessages((prev) => [
@@ -182,13 +182,13 @@ export default function AIAssistantWidget() {
                 </div>
               </div>
               <div className="flex items-center gap-1">
-                <button type="button"
+                <button
                   onClick={() => setIsExpanded(!isExpanded)}
                   className="rounded-md p-1.5 hover:bg-black/5 dark:hover:bg-white/10"
                 >
                   {isExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
                 </button>
-                <button type="button"
+                <button
                   onClick={() => setIsOpen(false)}
                   className="rounded-md p-1.5 hover:bg-black/5 dark:hover:bg-white/10 text-red-500"
                 >
@@ -201,7 +201,7 @@ export default function AIAssistantWidget() {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((m, i) => (
                 <div
-                  key={i-}
+                  key={i}
                   className={clsx('flex', m.role === 'user' ? 'justify-end' : 'justify-start')}
                 >
                   <div
@@ -233,7 +233,7 @@ export default function AIAssistantWidget() {
             {messages.length < 3 && (
               <div className="flex flex-wrap gap-2 px-4 pb-2">
                 {quickActions.map((action) => (
-                  <button type="button"
+                  <button
                     key={action}
                     onClick={() => setInput(action)}
                     className="rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs text-primary transition-colors hover:bg-primary/10"
@@ -247,7 +247,7 @@ export default function AIAssistantWidget() {
             {/* Input */}
             <div className="border-t border-border/50 p-3 bg-background/50">
               <div className="flex items-center gap-2 rounded-full border border-input bg-background px-3 py-2 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2">
-                <button type="button"
+                <button
                   onClick={toggleListen}
                   className={clsx(
                     'p-1.5 rounded-full transition-colors',
@@ -268,7 +268,7 @@ export default function AIAssistantWidget() {
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   disabled={isStreaming}
                 />
-                <button type="button"
+                <button
                   onClick={handleSend}
                   disabled={!input.trim() || isStreaming}
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground disabled:opacity-50 transition-colors"

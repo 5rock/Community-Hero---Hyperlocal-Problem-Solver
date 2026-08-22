@@ -148,11 +148,8 @@ async def run_tests():
         finally:
             await context.close()
             await browser.close()
-
-            # Return logs to save them synchronously outside this async function
-            return console_logs, js_errors, network_errors
-
             print("Testing complete.")
+        return console_logs, js_errors, network_errors
 
 
 if __name__ == "__main__":

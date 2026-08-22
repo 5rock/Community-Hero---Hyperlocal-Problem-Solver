@@ -87,7 +87,7 @@ export default function DashboardLayout() {
             <UserDropdown />
             <div className="flex items-center gap-1">
               <LanguageSelector />
-              <button type="button"
+              <button
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-accent text-muted-foreground transition-colors"
                 aria-label="Toggle Theme"
