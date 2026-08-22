@@ -22,6 +22,7 @@ class IssueCreate(IssueBase):
     repair_time: Optional[str] = None
     affected_population: Optional[str] = None
     suggested_department: Optional[str] = None
+    ward: Optional[str] = None
     priority_score: Optional[int] = None
     original_language: Optional[str] = None
     translated_text: Optional[str] = None
@@ -53,6 +54,7 @@ class IssueResponse(IssueBase):
     repair_time: Optional[str] = None
     affected_population: Optional[str] = None
     suggested_department: Optional[str] = None
+    ward: Optional[str] = None
     priority_score: Optional[int] = None
 
     original_language: Optional[str] = None

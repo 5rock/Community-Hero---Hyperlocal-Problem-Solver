@@ -73,8 +73,6 @@ async def add_security_headers(request: Request, call_next):
     return response
 
 
-# os.makedirs("uploads", exist_ok=True)
-# app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Include routers
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])

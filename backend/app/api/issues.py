@@ -1,3 +1,5 @@
+ERROR_ISSUE_NOT_FOUND = "Issue not found"
+ROLE_SUPER_ADMIN = "Super Admin"
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from typing import List, Optional
@@ -75,11 +77,13 @@ def get_assigned_issues(
 def get_issue(issue_id: int, db: Session = Depends(get_db)):
     issue = db.query(models.Issue).filter(models.Issue.id == issue_id).first()
     if not issue:
-        raise HTTPException(status_code=404, detail="Issue not found")
+        raise HTTPException(status_code=404, detail=ERROR_ISSUE_NOT_FOUND)
     if issue.reporter and issue.reporter.privacy_mode:
         issue.reporter.full_name = f"Citizen_{issue.reporter.id}"
     return issue
 
+
+from app.core.file_security import sanitize_and_validate_image
 
 @router.post("/analyze-preview")
 async def analyze_preview(
@@ -94,20 +98,15 @@ async def analyze_preview(
 
     if file:
         content = await file.read()
-        image_bytes = content
-
-        ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
-        ext = file.filename.split(".")[-1].lower()
-        mime = magic.Magic(mime=True)
-        file_mime_type = mime.from_buffer(content)
-        if file_mime_type not in ALLOWED_TYPES:
-            raise HTTPException(status_code=400, detail="Invalid file content type.")
-
-        image_mime = file_mime_type
+        
+        # Sanitize and validate image (handles size, mime, dimensions, EXIF)
+        sanitized_content, mime, ext = sanitize_and_validate_image(content)
+        image_bytes = sanitized_content
+        image_mime = mime
 
         # Save file to Supabase
         try:
-            image_url = store_image(content, image_mime, ext).public_url
+            image_url = store_image(sanitized_content, mime, ext).public_url
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
         except Exception as exc:
@@ -132,11 +131,11 @@ async def upload_image(
     file: UploadFile = File(...), current_user: models.User = Depends(get_current_user)
 ):
     content = await file.read()
-    ext = file.filename.split(".")[-1].lower()
+    
+    sanitized_content, mime_type, ext = sanitize_and_validate_image(content)
+
     try:
-        mime = magic.Magic(mime=True)
-        mime_type = mime.from_buffer(content)
-        stored = store_image(content, mime_type, ext)
+        stored = store_image(sanitized_content, mime_type, ext)
         return {"url": stored.public_url, "path": stored.path}
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -166,6 +165,22 @@ def create_issue(
                     detail=f"Duplicate issue. A similar issue exists within 50m. ID: {existing.id}",
                 )
 
+    # AI Routing: Find available officer for the ward and department
+    assigned_officer_id = None
+    if getattr(issue, "ward", None) and getattr(issue, "suggested_department", None):
+        officer = (
+            db.query(models.User)
+            .filter(
+                models.User.role == "Officer",
+                models.User.ward == issue.ward,
+                models.User.department == issue.suggested_department,
+                models.User.is_active == True,
+            )
+            .first()
+        )
+        if officer:
+            assigned_officer_id = officer.id
+
     db_issue = models.Issue(
         title=issue.title,
         description=issue.description,
@@ -182,13 +197,15 @@ def create_issue(
         repair_time=issue.repair_time,
         affected_population=issue.affected_population,
         suggested_department=issue.suggested_department,
+        ward=issue.ward,
         priority_score=issue.priority_score,
         original_language=issue.original_language or "en",
         translated_text=issue.translated_text,
         detected_objects=issue.detected_objects,
         image_quality_score=issue.image_quality_score,
         ai_scene_description=issue.ai_scene_description,
-        status="PENDING",
+        status="ASSIGNED" if assigned_officer_id else "PENDING",
+        assigned_officer_id=assigned_officer_id,
     )
     db.add(db_issue)
 
@@ -238,7 +255,7 @@ def verify_issue(
 ):
     issue = db.query(models.Issue).filter(models.Issue.id == issue_id).first()
     if not issue:
-        raise HTTPException(status_code=404, detail="Issue not found")
+        raise HTTPException(status_code=404, detail=ERROR_ISSUE_NOT_FOUND)
 
     existing = (
         db.query(models.Verification)
@@ -289,6 +306,41 @@ def verify_issue(
     return db_verification
 
 
+def _handle_status_update(db: Session, issue: models.Issue, new_status: str) -> None:
+    if issue.status == new_status:
+        return
+
+    if new_status == "IN_PROGRESS":
+        create_notification(
+            db,
+            issue.reporter_id,
+            "Issue In Progress",
+            f"Work has begun on '{issue.title}'.",
+            "INFO",
+        )
+    elif new_status == "RESOLVED":
+        create_notification(
+            db,
+            issue.reporter_id,
+            "Issue Resolved - Action Required",
+            f"'{issue.title}' was marked resolved. Please submit your closure poll.",
+            "ALERT",
+        )
+
+    issue.status = new_status
+    reporter = db.query(models.User).filter(models.User.id == issue.reporter_id).first()
+    
+    if not reporter:
+        return
+        
+    if new_status == "RESOLVED":
+        reporter.points += 10
+        reporter.resolved_reports += 1
+        reporter.trust_score = min(100, reporter.trust_score + 10)
+    elif new_status == "REJECTED":
+        reporter.trust_score = max(0, reporter.trust_score - 5)
+
+
 @router.patch("/{issue_id}", response_model=schemas.IssueResponse)
 def update_issue_status(
     issue_update: schemas.IssueUpdate,
@@ -298,7 +350,7 @@ def update_issue_status(
 ):
     if current_user.role not in [
         "Admin",
-        "Super Admin",
+        ROLE_SUPER_ADMIN,
         "Department Manager",
         "Officer",
     ]:
@@ -311,47 +363,11 @@ def update_issue_status(
             )
 
     if issue_update.status:
-        if issue_update.status != issue.status:
-            if issue_update.status == "IN_PROGRESS":
-                create_notification(
-                    db,
-                    issue.reporter_id,
-                    "Issue In Progress",
-                    f"Work has begun on '{issue.title}'.",
-                    "INFO",
-                )
-            elif issue_update.status == "RESOLVED":
-                create_notification(
-                    db,
-                    issue.reporter_id,
-                    "Issue Resolved - Action Required",
-                    f"'{issue.title}' was marked resolved. Please submit your closure poll.",
-                    "ALERT",
-                )
+        _handle_status_update(db, issue, issue_update.status)
 
-        issue.status = issue_update.status
-        if issue_update.status == "RESOLVED":
-            reporter = (
-                db.query(models.User)
-                .filter(models.User.id == issue.reporter_id)
-                .first()
-            )
-            if reporter:
-                reporter.points += 10
-                reporter.resolved_reports += 1
-                reporter.trust_score = min(100, reporter.trust_score + 10)
-        elif issue_update.status == "REJECTED":
-            reporter = (
-                db.query(models.User)
-                .filter(models.User.id == issue.reporter_id)
-                .first()
-            )
-            if reporter:
-                reporter.trust_score = max(0, reporter.trust_score - 5)
-
-    if issue_update.severity and current_user.role in ["Admin", "Super Admin"]:
+    if issue_update.severity and current_user.role in ["Admin", ROLE_SUPER_ADMIN]:
         issue.severity = issue_update.severity
-    if issue_update.category and current_user.role in ["Admin", "Super Admin"]:
+    if issue_update.category and current_user.role in ["Admin", ROLE_SUPER_ADMIN]:
         issue.category = issue_update.category
 
     db.commit()
@@ -368,7 +384,7 @@ def citizen_poll(
 ):
     issue = db.query(models.Issue).filter(models.Issue.id == issue_id).first()
     if not issue:
-        raise HTTPException(status_code=404, detail="Issue not found")
+        raise HTTPException(status_code=404, detail=ERROR_ISSUE_NOT_FOUND)
     if issue.reporter_id != current_user.id:
         raise HTTPException(
             status_code=403, detail="Only the reporter can submit a resolution poll"
@@ -401,7 +417,7 @@ def support_issue(
 ):
     issue = db.query(models.Issue).filter(models.Issue.id == issue_id).first()
     if not issue:
-        raise HTTPException(status_code=404, detail="Issue not found")
+        raise HTTPException(status_code=404, detail=ERROR_ISSUE_NOT_FOUND)
 
     issue.support_count += 1
     db.commit()
@@ -417,7 +433,7 @@ def reopen_issue(
 ):
     issue = db.query(models.Issue).filter(models.Issue.id == issue_id).first()
     if not issue:
-        raise HTTPException(status_code=404, detail="Issue not found")
+        raise HTTPException(status_code=404, detail=ERROR_ISSUE_NOT_FOUND)
 
     issue.reopen_requests += 1
     if issue.reopen_requests >= 3:

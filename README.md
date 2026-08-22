@@ -30,7 +30,7 @@ An AI-powered civic engagement platform designed to bridge the gap between citiz
 - **Database:** Supabase PostgreSQL
 - **Storage:** Supabase Storage
 - **AI Integration:** Google Gemini
-- **Infrastructure:** Docker, Nginx
+- **Infrastructure:** Vercel (Frontend), Railway/Render (Backend)
 
 ---
 
@@ -59,11 +59,9 @@ An AI-powered civic engagement platform designed to bridge the gap between citiz
 3. Create `.env` and add `VITE_API_URL=http://localhost:8000/api`
 4. Start the dev server: `npm run dev`
 
-### Docker Setup
-To run the entire stack seamlessly:
-```bash
-docker-compose up --build
-```
+### Deployment Setup
+
+We deploy the frontend to Vercel and the backend to Railway or Render. Please refer to our `DEPLOYMENT_GUIDE.md` for specific hosting instructions.
 
 ---
 

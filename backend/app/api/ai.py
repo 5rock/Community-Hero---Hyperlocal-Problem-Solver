@@ -1,3 +1,4 @@
+from typing import Annotated
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from app import schemas, models
 from app.api.auth import get_current_user, get_data_hash
@@ -14,8 +15,8 @@ router = APIRouter()
 @router.post("/chat", response_model=schemas.ChatResponse)
 def chat_with_ai(
     request: schemas.ChatRequest,
-    current_user: models.User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: Annotated[models.User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     context = (
         request.context
@@ -34,7 +35,7 @@ def chat_with_ai(
 
 
 @router.websocket("/ws/chat")
-async def chat_websocket(websocket: WebSocket, db: Session = Depends(get_db)):
+async def chat_websocket(websocket: WebSocket, db: Annotated[Session, Depends(get_db)]):
     await websocket.accept()
 
     # 1. Authenticate user from token
@@ -100,7 +101,7 @@ async def chat_websocket(websocket: WebSocket, db: Session = Depends(get_db)):
 
             # Stream response
             ai_reply = ""
-            for chunk in get_gemini_stream(safe_msg, system_context):
+            async for chunk in get_gemini_stream(safe_msg, system_context):
                 ai_reply += chunk
                 await websocket.send_text(json.dumps({"type": "chunk", "text": chunk}))
 

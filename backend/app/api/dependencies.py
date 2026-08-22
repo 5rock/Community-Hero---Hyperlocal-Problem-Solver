@@ -44,36 +44,27 @@ def abac_issue_checker(
 
     # Super Admin and Admin can access everything
     if user_level >= 4:
-        return issue
-
-    # Citizen can only access their own issues
-    if user_level == 1:
+        pass
+    elif user_level == 1:
+        # Citizen can only access their own issues
         if issue.reporter_id != user.id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Access denied. Not your issue.",
             )
-        return issue
+    elif user_level in [2, 3]:
+        # Officer and Department Manager: check jurisdiction (ABAC)
+        if issue.assigned_officer_id != user.id:
+            if (
+                user.department
+                and issue.suggested_department
+                and user.department != issue.suggested_department
+            ):
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Access denied. Outside your department.",
+                )
+    else:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied.")
 
-    # Officer and Department Manager: check jurisdiction (ABAC)
-    if user_level in [2, 3]:
-        # For this hackathon, we assume Issue will have city/ward/department, or we check assigned_officer_id
-        if issue.assigned_officer_id == user.id:
-            return issue
-
-        # Example ABAC rules:
-        if (
-            user.department
-            and issue.suggested_department
-            and user.department != issue.suggested_department
-        ):
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Access denied. Outside your department.",
-            )
-
-        # If we had issue.city, we'd check that too
-        # For now, if unassigned, we let them see it if department matches
-        return issue
-
-    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied.")
+    return issue

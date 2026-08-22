@@ -34,6 +34,7 @@ class Issue(Base):
     repair_time = Column(String, nullable=True)
     affected_population = Column(String, nullable=True)
     suggested_department = Column(String, nullable=True)
+    ward = Column(String, nullable=True)
     priority_score = Column(Integer, nullable=True)
 
     # Advanced AI Fields

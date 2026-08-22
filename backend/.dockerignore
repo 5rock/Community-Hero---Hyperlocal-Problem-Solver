@@ -1,8 +1,0 @@
-__pycache__/
-venv/
-.venv/
-.env
-*.pyc
-.pytest_cache/
-data/
-sql_app.db

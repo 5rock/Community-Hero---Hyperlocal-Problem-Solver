@@ -12,6 +12,10 @@ from alembic import op
 import sqlalchemy as sa
 import app
 
+SA_NOW = sa.text("now()")
+USERS_ID = "users.id"
+ISSUES_ID = "issues.id"
+
 # revision identifiers, used by Alembic.
 revision: str = "20260629_01"
 down_revision: Union[str, Sequence[str], None] = None
@@ -36,7 +40,7 @@ def upgrade() -> None:
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=SA_NOW,
             nullable=True,
         ),
         sa.PrimaryKeyConstraint("id"),
@@ -78,7 +82,7 @@ def upgrade() -> None:
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=SA_NOW,
             nullable=True,
         ),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
@@ -96,12 +100,12 @@ def upgrade() -> None:
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=SA_NOW,
             nullable=True,
         ),
         sa.ForeignKeyConstraint(
             ["user_id"],
-            ["users.id"],
+            [USERS_ID],
         ),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -141,21 +145,21 @@ def upgrade() -> None:
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=SA_NOW,
             nullable=True,
         ),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
         sa.ForeignKeyConstraint(
             ["assigned_officer_id"],
-            ["users.id"],
+            [USERS_ID],
         ),
         sa.ForeignKeyConstraint(
             ["parent_issue_id"],
-            ["issues.id"],
+            [ISSUES_ID],
         ),
         sa.ForeignKeyConstraint(
             ["reporter_id"],
-            ["users.id"],
+            [USERS_ID],
         ),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -175,12 +179,12 @@ def upgrade() -> None:
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=SA_NOW,
             nullable=True,
         ),
         sa.ForeignKeyConstraint(
             ["user_id"],
-            ["users.id"],
+            [USERS_ID],
         ),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -202,16 +206,16 @@ def upgrade() -> None:
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=SA_NOW,
             nullable=True,
         ),
         sa.Column(
             "last_activity",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=SA_NOW,
             nullable=True,
         ),
-        sa.ForeignKeyConstraint(["user_id"], ["users.id"], ondelete="CASCADE"),
+        sa.ForeignKeyConstraint(["user_id"], [USERS_ID], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_user_sessions_id"), "user_sessions", ["id"], unique=False)
@@ -230,17 +234,17 @@ def upgrade() -> None:
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=SA_NOW,
             nullable=True,
         ),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
         sa.ForeignKeyConstraint(
             ["citizen_id"],
-            ["users.id"],
+            [USERS_ID],
         ),
         sa.ForeignKeyConstraint(
             ["issue_id"],
-            ["issues.id"],
+            [ISSUES_ID],
         ),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -256,16 +260,16 @@ def upgrade() -> None:
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            server_default=SA_NOW,
             nullable=True,
         ),
         sa.ForeignKeyConstraint(
             ["issue_id"],
-            ["issues.id"],
+            [ISSUES_ID],
         ),
         sa.ForeignKeyConstraint(
             ["verifier_id"],
-            ["users.id"],
+            [USERS_ID],
         ),
         sa.PrimaryKeyConstraint("id"),
     )

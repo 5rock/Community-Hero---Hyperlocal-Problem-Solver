@@ -27,7 +27,7 @@ def get_gemini_response(prompt: str, context: str = None) -> str:
         raise HTTPException(status_code=500, detail="Failed to run AI Multi-Agent flow")
 
 
-def get_gemini_stream(prompt: str, context: str = ""):
+async def get_gemini_stream(prompt: str, context: str = ""):
     if not api_key:
         yield "This is a mock AI response stream since the Gemini API key is not configured. "
         yield "The AI assistant is currently running in fallback mode."
@@ -36,11 +36,11 @@ def get_gemini_stream(prompt: str, context: str = ""):
     client = genai.Client()
     try:
         full_prompt = f"System Context: {context}\n\nUser Request: {prompt}"
-        response = client.models.generate_content_stream(
+        response = await client.aio.models.generate_content_stream(
             model="gemini-2.5-flash",
             contents=full_prompt,
         )
-        for chunk in response:
+        async for chunk in response:
             if chunk.text:
                 yield chunk.text
     except Exception as e:

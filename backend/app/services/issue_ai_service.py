@@ -123,6 +123,24 @@ def process_multilingual_text(title: str, description: str) -> tuple[str, str]:
         return "en", f"{title}. {description}"
 
 
+from pydantic import BaseModel, Field, ValidationError
+
+class IssueAnalysisSchema(BaseModel):
+    category: str = Field(..., description="Category of the issue")
+    severity: str = Field(..., description="Low, Medium, High, Critical")
+    summary: str = Field(..., description="Concise actionable summary")
+    suggested_resolution: str = Field(..., description="Recommend next action")
+    confidence: float = Field(..., ge=0.0, le=100.0, description="Confidence percentage")
+    estimated_cost: float = Field(..., description="Estimated cost in INR")
+    repair_time: str = Field(..., description="Estimated repair time")
+    affected_population: str = Field(..., description="Short string describing affected population")
+    suggested_department: str = Field(..., description="Relevant department")
+    ward: Optional[str] = Field(None, description="The ward or area mentioned in the report, if any")
+    priority_score: int = Field(..., ge=0, le=100, description="Urgency score 0-100")
+    detected_objects: str = Field(..., description="JSON string list of objects")
+    image_quality_score: float = Field(..., ge=0.0, le=100.0)
+    ai_scene_description: str = Field(...)
+
 def analyze_issue(
     title: str,
     description: str,
@@ -151,22 +169,7 @@ def analyze_issue(
     
     If an image is provided, evaluate its quality.
     
-    Return a JSON object with these EXACT fields:
-    - "category": (Pothole, Garbage, Water Leakage, Streetlight, Drainage, Road Damage, Public Safety, Other)
-    - "severity": (Low, Medium, High, Critical)
-    - "summary": A concise actionable summary of the issue.
-    - "suggested_resolution": Recommend the next action.
-    - "confidence": Float representing your confidence percentage (0.0 to 100.0).
-    - "estimated_cost": Float estimated cost in INR (e.g. 15000.0).
-    - "repair_time": String estimating repair time (e.g., "3 Days").
-    - "affected_population": Short string (e.g., "Local commuters").
-    - "suggested_department": String relevant department (e.g., "Municipal Roads").
-    - "priority_score": Integer 0 to 100 representing urgency.
-    - "detected_objects": A JSON string list of objects detected in the image (e.g., '["pothole", "car", "water"]'). If no image, '[]'.
-    - "image_quality_score": Float from 0.0 to 100.0 scoring image clarity/brightness. If no image, 0.0.
-    - "ai_scene_description": String describing the scene in the image. If no image, "N/A".
-    
-    Ensure response is ONLY valid JSON. No markdown backticks around the json.
+    Return a JSON object matching the requested schema.
     """
 
     try:
@@ -180,9 +183,25 @@ def analyze_issue(
             contents = [prompt]
 
         response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"), contents=contents
+            model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash"), 
+            contents=contents,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json",
+                response_schema=IssueAnalysisSchema,
+                temperature=0.1,
+            )
         )
-        result = parse_json_from_gemini(response.text)
+        
+        # Parse and validate with Pydantic
+        raw_dict = parse_json_from_gemini(response.text)
+        validated_data = IssueAnalysisSchema(**raw_dict)
+        result = validated_data.model_dump()
+        
+        # Business Rules / Confidence Checks
+        if result["confidence"] < 60.0:
+            result["severity"] = "Medium" # Fallback safely
+            result["summary"] = f"[LOW CONFIDENCE] {result['summary']}"
+            result["suggested_department"] = "Manual Review Required"
 
         # Add multilingual context
         result["original_language"] = lang_code
@@ -190,6 +209,9 @@ def analyze_issue(
         result["hallucination_warning"] = result.get("confidence", 0.0) < 70.0
 
         return result
+    except ValidationError as e:
+        logger.error(f"Pydantic Validation failed for AI output: {e}")
+        return fallback_analysis()
     except Exception as e:
         logger.error(f"Error analyzing issue: {e}")
         return fallback_analysis()

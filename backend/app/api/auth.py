@@ -165,13 +165,50 @@ def login(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
+    # Check lockout
+    now = datetime.now(timezone.utc)
+    if user.locked_until:
+        locked_until = user.locked_until
+        if locked_until.tzinfo is None:
+            locked_until = locked_until.replace(tzinfo=timezone.utc)
+        
+        if locked_until > now:
+            audit = models.AuditLog(
+                user_id=user.id,
+                role=user.role,
+                action="LOGIN_LOCKED",
+                result="FAILURE",
+                details="Account is temporarily locked",
+                ip_address=request.client.host if request.client else "",
+            )
+            db.add(audit)
+            db.commit()
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect email or password",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        else:
+            # Lockout expired, reset counter before attempting
+            user.failed_login_attempts = 0
+            user.locked_until = None
+            db.commit()
+
     if not auth.verify_password(form_data.password, user.hashed_password):
+        user.failed_login_attempts = (user.failed_login_attempts or 0) + 1
+        audit_action = "LOGIN_FAILED"
+        audit_details = "Incorrect password"
+        if user.failed_login_attempts >= 5:
+            user.locked_until = now + timedelta(minutes=15)
+            audit_action = "ACCOUNT_LOCKED"
+            audit_details = "5 failed attempts, account locked for 15 minutes"
+
         audit = models.AuditLog(
             user_id=user.id,
             role=user.role,
-            action="LOGIN_FAILED",
+            action=audit_action,
             result="FAILURE",
-            details="Incorrect password",
+            details=audit_details,
             ip_address=request.client.host if request.client else "",
         )
         db.add(audit)
@@ -181,6 +218,12 @@ def login(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+    # Successful login, reset lockout counters
+    if (user.failed_login_attempts and user.failed_login_attempts > 0) or user.locked_until:
+        user.failed_login_attempts = 0
+        user.locked_until = None
+        db.commit()
 
     if auth.needs_rehash(user.hashed_password):
         user.hashed_password = auth.get_password_hash(form_data.password)

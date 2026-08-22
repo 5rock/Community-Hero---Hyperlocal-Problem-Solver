@@ -22,6 +22,8 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     full_name = Column(String, index=True)
     is_active = Column(Boolean, default=True)
+    failed_login_attempts = Column(Integer, default=0)
+    locked_until = Column(DateTime(timezone=True), nullable=True)
     role = Column(
         String, default="Citizen"
     )  # Citizen, Officer, Department Manager, Admin, Super Admin

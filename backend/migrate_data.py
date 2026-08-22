@@ -21,13 +21,27 @@ TABLES = (
 
 def _postgres_url() -> str:
     value = os.getenv("DATABASE_URL", "").strip()
+    PREFIX = "postgresql+psycopg2://"
     if value.startswith("postgres://"):
-        return "postgresql+psycopg2://" + value.removeprefix("postgres://")
+        return PREFIX + value.removeprefix("postgres://")
     if value.startswith("postgresql://"):
-        return "postgresql+psycopg2://" + value.removeprefix("postgresql://")
-    if value.startswith("postgresql+psycopg2://"):
+        return PREFIX + value.removeprefix("postgresql://")
+    if value.startswith(PREFIX):
         return value
     raise RuntimeError("DATABASE_URL must point to PostgreSQL")
+
+
+def _update_identity_sequences(target_meta: MetaData, target_connection) -> None:
+    # Keep PostgreSQL identity sequences ahead of imported integer IDs.
+    for _, target_name in TABLES:
+        table = target_meta.tables.get(target_name)
+        if table is None or "id" not in table.c:
+            continue
+        target_connection.exec_driver_sql(
+            "SELECT setval(pg_get_serial_sequence(%s, 'id'), "
+            "COALESCE((SELECT MAX(id) FROM " + f'"{target_name}"' + "), 1), true)",
+            (target_name,),
+        )
 
 
 def migrate(source: Path = Path("sql_app.db")) -> dict[str, tuple[int, int]]:
@@ -75,16 +89,7 @@ def migrate(source: Path = Path("sql_app.db")) -> dict[str, tuple[int, int]]:
             )
             counts[target_name] = (source_count, int(target_count or 0))
 
-        # Keep PostgreSQL identity sequences ahead of imported integer IDs.
-        for _, target_name in TABLES:
-            table = target_meta.tables.get(target_name)
-            if table is None or "id" not in table.c:
-                continue
-            target_connection.exec_driver_sql(
-                "SELECT setval(pg_get_serial_sequence(%s, 'id'), "
-                "COALESCE((SELECT MAX(id) FROM " + f'"{target_name}"' + "), 1), true)",
-                (target_name,),
-            )
+        _update_identity_sequences(target_meta, target_connection)
 
     return counts
 

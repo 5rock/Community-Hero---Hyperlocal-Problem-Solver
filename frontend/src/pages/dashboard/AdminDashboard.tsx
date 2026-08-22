@@ -24,6 +24,8 @@ const item = {
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null)
   const [securityStats, setSecurityStats] = useState<any>(null)
+  const [users, setUsers] = useState<any[]>([])
+  const [aiInsights, setAiInsights] = useState<any>(null)
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -37,17 +39,22 @@ export default function AdminDashboard() {
         .get('/admin/security-dashboard')
         .then((res) => setSecurityStats(res.data))
         .catch(console.error),
-      api.get('/stats/ai-insights').catch(console.error),
+      api
+        .get('/admin/users')
+        .then((res) => setUsers(res.data))
+        .catch(console.error),
+      api
+        .get('/stats/ai-insights')
+        .then((res) => setAiInsights(res.data))
+        .catch(console.error),
     ]).finally(() => setIsLoading(false))
   }, [])
 
-  const aiCategories = [
-    { name: 'Road Issues', value: 42, color: '#0284c7' },
-    { name: 'Garbage', value: 25, color: '#10b981' },
-    { name: 'Water Leakage', value: 18, color: '#3b82f6' },
-    { name: 'Electricity', value: 10, color: '#f59e0b' },
-    { name: 'Others', value: 5, color: '#94a3b8' },
-  ]
+  const aiCategories =
+    stats?.distribution?.map((item: any, i: number) => {
+      const colors = ['#0284c7', '#10b981', '#3b82f6', '#f59e0b', '#94a3b8', '#ec4899', '#8b5cf6']
+      return { name: item.name, value: item.value, color: colors[i % colors.length] }
+    }) || []
 
   if (isLoading) {
     return (
@@ -94,7 +101,7 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-red-500">
-                {stats?.cards?.critical_issues || 18}
+                {stats?.cards?.critical_issues || 0}
               </div>
             </CardContent>
           </Card>
@@ -109,7 +116,9 @@ export default function AdminDashboard() {
               <Users size={16} className="text-orange-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-orange-500">14</div>
+              <div className="text-4xl font-bold text-orange-500">
+                {users?.filter((u) => u.role === 'Officer' && u.is_active).length || 0}
+              </div>
             </CardContent>
           </Card>
         </motion.div>
@@ -118,13 +127,13 @@ export default function AdminDashboard() {
           <Card hoverable className="h-full border-l-4 border-l-green-500">
             <CardHeader className="pb-2 flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Avg. Resolution
+                Resolution Rate
               </CardTitle>
               <Clock size={16} className="text-green-500" />
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-green-500">
-                2.4 <span className="text-lg">Days</span>
+                {stats?.cards?.resolution_rate || 0} <span className="text-lg">%</span>
               </div>
             </CardContent>
           </Card>
@@ -177,7 +186,7 @@ export default function AdminDashboard() {
                       paddingAngle={5}
                       dataKey="value"
                     >
-                      {aiCategories.map((entry, index) => (
+                      {aiCategories.map((entry: any, index: number) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
@@ -193,7 +202,7 @@ export default function AdminDashboard() {
                 </ResponsiveContainer>
               </div>
               <div className="space-y-2">
-                {aiCategories.map((cat) => (
+                {aiCategories.map((cat: any) => (
                   <div key={cat.name} className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2">
                       <div
@@ -221,13 +230,9 @@ export default function AdminDashboard() {
                 <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-10 transition-opacity">
                   <TrendingUp size={64} />
                 </div>
-                <h4 className="font-bold text-foreground mb-1">Weekend Surge Predicted</h4>
+                <h4 className="font-bold text-foreground mb-1">Monthly Trends</h4>
                 <p className="text-muted-foreground">
-                  <span className="font-semibold text-primary">
-                    Garbage complaints expected to rise by 35%
-                  </span>{' '}
-                  this weekend due to the downtown festival activity. Suggesting preemptive routing
-                  for cleanup crews in Zone B.
+                  {aiInsights?.monthly_trends || 'No trends available yet.'}
                 </p>
               </div>
 
@@ -235,16 +240,71 @@ export default function AdminDashboard() {
                 <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-10 transition-opacity">
                   <AlertTriangle size={64} />
                 </div>
-                <h4 className="font-bold text-foreground mb-1">Infrastructure Warning</h4>
+                <h4 className="font-bold text-foreground mb-1">Risk Forecasting</h4>
                 <p className="text-muted-foreground">
-                  AI analysis of recent water leakage reports indicates a high probability of a main
-                  pipe burst in the North District within the next 7 days. Confidence level:{' '}
-                  <span className="font-semibold text-red-500">88%</span>.
+                  {aiInsights?.risk_forecasting || 'No forecasting available yet.'}
                 </p>
               </div>
             </CardContent>
           </Card>
         </div>
+      </motion.div>
+
+      {/* User Management Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="mt-8"
+      >
+        <h2 className="text-2xl font-bold tracking-tight mb-4 flex items-center gap-2">
+          <Users className="text-primary" /> Users & Officer Assignments
+        </h2>
+        <Card>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-muted-foreground bg-muted/50">
+                  <tr>
+                    <th className="px-6 py-3">Name</th>
+                    <th className="px-6 py-3">Role</th>
+                    <th className="px-6 py-3">Department</th>
+                    <th className="px-6 py-3">Ward</th>
+                    <th className="px-6 py-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.length > 0 ? (
+                    users.map((u) => (
+                      <tr key={u.id} className="border-b hover:bg-muted/30 transition-colors">
+                        <td className="px-6 py-4 font-medium">
+                          {u.full_name} <br />
+                          <span className="text-xs text-muted-foreground">{u.email}</span>
+                        </td>
+                        <td className="px-6 py-4">{u.role}</td>
+                        <td className="px-6 py-4">{u.department || '-'}</td>
+                        <td className="px-6 py-4">{u.ward || '-'}</td>
+                        <td className="px-6 py-4">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs ${u.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                          >
+                            {u.is_active ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr className="border-b">
+                      <td className="px-6 py-4 col-span-5 text-center text-muted-foreground">
+                        No users found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* Security Dashboard */}
